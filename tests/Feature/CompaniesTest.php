@@ -18,10 +18,10 @@ class CompaniesTest extends TestCase
         $attributes = [
             'name' => $this->faker->name,
         ];
-        // a user can create a company
-        $this->post('/companies', $attributes);
 
-        $this->assertStatus(200);
+        // a user can create a company
+        $this->post('/companies', $attributes)->assertRedirect('/companies');
+
         $this->assertDatabaseHas('companies', $attributes);
     }
 }
