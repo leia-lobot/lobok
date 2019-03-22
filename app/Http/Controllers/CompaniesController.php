@@ -14,11 +14,13 @@ class CompaniesController extends Controller
         return view('companies.index', compact('companies'));
     }
 
-    public function store(Request $request)
+    public function store()
     {
         // Validate
+        $attributes = request()->validate(['name' => 'required']);
+
         // Store
-        Company::create(request(['name']));
+        Company::create($attributes);
         // Redirect
         return redirect('/companies');
     }
