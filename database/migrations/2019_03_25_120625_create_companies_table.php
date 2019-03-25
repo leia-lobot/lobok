@@ -15,8 +15,8 @@ class CreateCompaniesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
 
-            $table->unsignedInteger('owner_id');
-            $table->foreign('owner_id')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('owner_id');
+            $table->foreign('owner_id')->references('id')->on('users');
 
             $table->timestamps();
         });
