@@ -24,6 +24,19 @@ class CompaniesTest extends TestCase
         $this->post('/companies', $attributes)->assertRedirect('/companies');
 
         $this->assertDatabaseHas('companies', $attributes);
+
+        $this->get('/companies')->assertSee($attributes['name']);
+    }
+
+    /** @test */
+    public function a_user_can_view_a_company()
+    {
+        $this->withoutExceptionHandling();
+
+        $company = factory(Company::class)->create();
+
+        $this->get($company->path())
+            ->assertSee($company->name);
     }
 
     /** @test */
@@ -32,5 +45,13 @@ class CompaniesTest extends TestCase
         $attributes = factory(Company::class)->raw(['name' => '']);
 
         $this->post('/companies', $attributes)->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function a_company_requires_an_owner()
+    {
+        $attributes = factory(Company::class)->raw();
+
+        $this->post('/companies', $attributes)->assertSessionHasErrors('owner');
     }
 }

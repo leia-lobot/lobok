@@ -11,17 +11,24 @@ class CompaniesController extends Controller
     {
         $companies = Company::all();
 
-        return view('companies.index', compact('companies'));
+        return view('company.index', compact('companies'));
     }
 
     public function store()
     {
         // Validate
-        $attributes = request()->validate(['name' => 'required']);
+        $attributes = request()->validate([
+            'name' => 'required',
+        ]);
 
         // Store
         Company::create($attributes);
         // Redirect
         return redirect('/companies');
+    }
+
+    public function show(Company $company)
+    {
+        return view('company.show', compact('company'));
     }
 }

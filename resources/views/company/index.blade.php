@@ -10,11 +10,16 @@
     <body>
 
         <div class="content">
+            <h1>Companies</h1>
 
             <ul>
-                @foreach ($companies as $company)
-                    <li>{!! $company->name !!}</li>
-                @endforeach
+                @forelse ($companies as $company)
+                    <li>
+                        <a href="{{$company->path()}}">{!! $company->name !!}</a>
+                    </li>
+                    @empty
+                        <li>No companies yet.</li>
+                @endforelse
             </ul>
 
         </div>
