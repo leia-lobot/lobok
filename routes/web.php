@@ -1,5 +1,6 @@
 <?php
 
+use App\Booking;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,9 @@ Route::resource('companies', 'CompaniesController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/bookings', function () {
+    Booking::create(request(['resource_id', 'company_id', 'user_id', 'start_time', 'end_time', 'extras']));
+
+    return redirect('/bookings');
+});
