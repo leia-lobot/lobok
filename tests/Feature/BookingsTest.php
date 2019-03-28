@@ -17,11 +17,13 @@ class BookingsTest extends TestCase
         $user = factory('App\User')->create();
         $resource = factory('App\Room')->create();
         $company = factory('App\Company')->create();
-        //$extras = factory('App\Extras', 3)->create();
+        $extras = factory('App\Extras', 3)->create();
 
         $this->actingAs($user);
 
         $attributes = [
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
             'company_id' => $company->id,
             'user_id' => $user->id,
@@ -34,6 +36,6 @@ class BookingsTest extends TestCase
 
         $this->assertDatabaseHas('bookings', $attributes);
 
-        //$this->get('/bookings')->assertSee($attributes['name']);
+        $this->get('/bookings')->assertSee($attributes['title']);
     }
 }

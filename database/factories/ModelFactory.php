@@ -6,6 +6,7 @@ use App\Room;
 use App\Extras;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use App\Booking;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,5 +42,17 @@ $factory->define(Company::class, function (Faker $faker) {
 
 $factory->define(Extras::class, function (Faker $faker) {
     return [
+    ];
+});
+
+$factory->define(Booking::class, function (Faker $faker) {
+    return [
+        'title' => 'TestEvent',
+        'description' => 'Here we be testing',
+        'resource_id' => factory(Room::class)->create(),
+        'company_id' => factory(Company::class)->create(),
+        'user_id' => factory(User::class)->create(),
+        'start_time' => now(),
+        'end_time' => now()->addHour(1),
     ];
 });

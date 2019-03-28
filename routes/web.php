@@ -24,7 +24,17 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/bookings', function () {
-    Booking::create(request(['resource_id', 'company_id', 'user_id', 'start_time', 'end_time', 'extras']));
+    // Validation
 
+    // Creation
+    Booking::create(request(['title', 'description', 'resource_id', 'company_id', 'user_id', 'start_time', 'end_time', 'extras']));
+
+    // Redirect
     return redirect('/bookings');
+});
+
+Route::get('/bookings', function () {
+    $bookings = Booking::all();
+
+    return $bookings;
 });
