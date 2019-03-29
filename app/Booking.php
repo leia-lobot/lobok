@@ -17,4 +17,14 @@ class Booking extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Company');
+    }
+
+    public function resource()
+    {
+        return $this->belongsTo('App\Resource');
+    }
 }

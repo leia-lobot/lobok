@@ -15,7 +15,7 @@ class BookingsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = factory('App\User')->create();
-        $resource = factory('App\Room')->create();
+        $resource = factory('App\Resource')->create();
         $company = factory('App\Company')->create();
         $extras = factory('App\Extras', 3)->create();
 

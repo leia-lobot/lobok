@@ -18,7 +18,7 @@ class CreateBookingsTable extends Migration
             $table->string('description');
 
             $table->bigInteger('resource_id');
-            $table->foreign('resource_id')->references('id')->on('rooms');
+            $table->foreign('resource_id')->references('id')->on('resources');
 
             $table->bigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');

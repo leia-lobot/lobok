@@ -2,11 +2,11 @@
 
 use App\User;
 use App\Company;
-use App\Room;
 use App\Extras;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Booking;
+use App\Resource;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +29,9 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(Room::class, function (Faker $faker) {
+$factory->define(Resource::class, function (Faker $faker) {
     return [
+        'name' => $faker->sentence,
     ];
 });
 
@@ -49,7 +50,7 @@ $factory->define(Booking::class, function (Faker $faker) {
     return [
         'title' => 'TestEvent',
         'description' => 'Here we be testing',
-        'resource_id' => factory(Room::class)->create(),
+        'resource_id' => factory(Resource::class)->create(),
         'company_id' => factory(Company::class)->create(),
         'user_id' => factory(User::class)->create(),
         'start_time' => now(),
