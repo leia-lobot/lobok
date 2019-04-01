@@ -5,18 +5,20 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BookingsTest extends TestCase
+class ReservationsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_create_a_booking()
+    public function a_user_can_create_a_reservation()
     {
         $this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
+        $user = factory('App\User')->create([
+            'company_id' => factory('App\Company')
+        ]);
+
         $resource = factory('App\Resource')->create();
-        $company = factory('App\Company')->create();
 
         $this->actingAs($user);
 
@@ -24,27 +26,26 @@ class BookingsTest extends TestCase
             'title' => 'Hodorton',
             'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'company_id' => $company->id,
             'start_time' => now(),
             'end_time' => now()->addHour(2),
         ];
 
         // a user can create a company
-        $this->post('/bookings', $attributes)->assertRedirect('/bookings');
+        $this->post('/reservations', $attributes)->assertRedirect('/reservations');
 
-        $this->assertDatabaseHas('bookings', $attributes);
+        $this->assertDatabaseHas('reservations', $attributes);
 
-        $this->get('/bookings')->assertSee($attributes['title']);
+        $this->get('/reservations')->assertSee($attributes['title']);
     }
 
     /** @test */
-    public function a_booking_requires_a_company()
+    public function a_reservation_requires_a_company()
     {
         //$this->withoutExceptionHandling();
 
         $user = factory('App\User')->create();
+
         $resource = factory('App\Resource')->create();
-        //$company = factory('App\Company')->create();
 
         $this->actingAs($user);
 
@@ -52,15 +53,14 @@ class BookingsTest extends TestCase
             'title' => 'Hodorton',
             'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            //'company_id' => $company->id,
             'start_time' => now(),
             'end_time' => now()->addHour(2),
         ];
 
         // a user can create a company
-        $this->post('/bookings', $attributes)->assertSessionHasErrors('company_id');
+        $this->post('/reservations', $attributes)->assertStatus(403);
 
-        $this->assertDatabaseMissing('bookings', $attributes);
+        $this->assertDatabaseMissing('reservations', $attributes);
     }
 
     /** @test */
@@ -68,7 +68,9 @@ class BookingsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
+         $user = factory('App\User')->create([
+            'company_id' => factory('App\Company')
+        ]);
         //$resource = factory('App\Resource')->create();
         $company = factory('App\Company')->create();
 
@@ -84,9 +86,9 @@ class BookingsTest extends TestCase
         ];
 
         // a user can create a company
-        $this->post('/bookings', $attributes)->assertSessionHasErrors('resource_id');
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('resource_id');
 
-        $this->assertDatabaseMissing('bookings', $attributes);
+        $this->assertDatabaseMissing('reservations', $attributes);
     }
 
     /** @test */
@@ -94,7 +96,9 @@ class BookingsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
+        $user = factory('App\User')->create([
+            'company_id' => factory('App\Company')
+        ]);
         $resource = factory('App\Resource')->create();
         $company = factory('App\Company')->create();
 
@@ -110,9 +114,9 @@ class BookingsTest extends TestCase
         ];
 
         // a user can create a company
-        $this->post('/bookings', $attributes)->assertSessionHasErrors('start_time');
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('start_time');
 
-        $this->assertDatabaseMissing('bookings', $attributes);
+        $this->assertDatabaseMissing('reservations', $attributes);
     }
 
     /** @test */
@@ -120,7 +124,9 @@ class BookingsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
+        $user = factory('App\User')->create([
+            'company_id' => factory('App\Company')
+        ]);
         $resource = factory('App\Resource')->create();
         $company = factory('App\Company')->create();
 
@@ -136,8 +142,8 @@ class BookingsTest extends TestCase
         ];
 
         // a user can create a company
-        $this->post('/bookings', $attributes)->assertSessionHasErrors('end_time');
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('end_time');
 
-        $this->assertDatabaseMissing('bookings', $attributes);
+        $this->assertDatabaseMissing('reservations', $attributes);
     }
 }

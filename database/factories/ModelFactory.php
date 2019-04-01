@@ -5,8 +5,8 @@ use App\Company;
 use App\Extras;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
-use App\Booking;
 use App\Resource;
+use App\Reservation;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ $factory->define(Extras::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(Booking::class, function (Faker $faker) {
+$factory->define(Reservation::class, function (Faker $faker) {
     return [
         'title' => 'TestEvent',
         'description' => 'Here we be testing',

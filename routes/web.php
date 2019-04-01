@@ -22,5 +22,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/bookings', 'BookingsController@store');
-Route::get('/bookings', 'BookingsController@index');
+Route::post('/reservations', 'ReservationsController@store');
+Route::get('/reservations', 'ReservationsController@index');
