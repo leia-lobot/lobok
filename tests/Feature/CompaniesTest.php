@@ -46,12 +46,4 @@ class CompaniesTest extends TestCase
 
         $this->post('/companies', $attributes)->assertSessionHasErrors('name');
     }
-
-    // /** @test */
-    // public function a_company_requires_an_owner()
-    // {
-    //     $attributes = factory(Company::class)->raw();
-
-    //     $this->post('/companies', $attributes)->assertSessionHasErrors('owner');
-    // }
 }

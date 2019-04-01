@@ -1,6 +1,5 @@
 <?php
 
-use App\Booking;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,18 +22,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/bookings', function () {
-    // Validation
-
-    // Creation
-    Booking::create(request(['title', 'description', 'resource_id', 'company_id', 'user_id', 'start_time', 'end_time', 'extras']));
-
-    // Redirect
-    return redirect('/bookings');
-});
-
-Route::get('/bookings', function () {
-    $bookings = Booking::all();
-
-    return $bookings;
-});
+Route::post('/bookings', 'BookingsController@store');
+Route::get('/bookings', 'BookingsController@index');
