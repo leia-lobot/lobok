@@ -34,9 +34,52 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'roles' => 'array'
     ];
 
     public function company() {
         return $this->belongsTo('App\Company');
+    }
+
+
+    public function addRole(string $role)
+    {
+        $roles = $this->getRoles();
+        $roles[] = $role;
+
+        $roles = array_unique($roles);
+        $this->setRoles($roles);
+
+        return $this;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->setAttribute('roles', $roles);
+
+        return $this;
+    }
+
+    public function hasRole($roles)
+    {
+        $currentRoles = $this->getRoles();
+
+        foreach($roles as $role) {
+            if(!in_array($role, $currentRoles)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->getAttribute('roles');
+
+        if(is_null($roles)) {
+            $roles = [];
+        }
+
+        return $roles;
     }
 }
