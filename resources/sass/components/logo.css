@@ -1,0 +1,8 @@
+
+.main-logo {
+    @apply block;
+    @apply flex;
+    @apply items-center;
+    @apply flex-no-shrink;
+    @apply text-white;
+}

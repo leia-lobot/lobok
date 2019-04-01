@@ -1,0 +1,17 @@
+.main-nav {
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+    @apply flex-wrap;
+    @apply bg-grey-darkest;
+    @apply p-4 ;
+    @apply pin; 
+}
+
+
+.menu-item {
+    @apply no-underline;
+    @apply block;
+    @apply p-4;
+    @apply text-grey-darker;
+}
