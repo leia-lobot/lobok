@@ -26,7 +26,7 @@ class ResourcesTest extends TestCase
 
         // Assert
         $this->assertDatabaseHas('resources', $attributes);
+        $this->get('/resources')->assertSee($attributes['name']);
     }
-    
-    
+     
 }

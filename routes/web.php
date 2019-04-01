@@ -26,3 +26,4 @@ Route::post('/reservations', 'ReservationsController@store');
 Route::get('/reservations', 'ReservationsController@index');
 
 Route::post('/resources', 'ResourcesController@store');
+Route::get('/resources', 'ResourcesController@index');

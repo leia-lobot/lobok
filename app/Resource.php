@@ -9,6 +9,8 @@ class Resource extends Model
 {
     use Sluggable;
 
+    protected $guarded = [];
+
     public function bookings()
     {
         return $this->belongsToMany('App\Booking');

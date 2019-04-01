@@ -10,13 +10,13 @@ class AddReservationRelations extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->bigInteger('resource_id', false, true);
+            $table->bigInteger('resource_id', false, true)->nullable();
             $table->foreign('resource_id')->references('id')->on('resources');
 
-            $table->bigInteger('company_id', false, true);
+            $table->bigInteger('company_id', false, true)->nullable();
             $table->foreign('company_id')->references('id')->on('companies');
 
-            $table->bigInteger('user_id', false, true);
+            $table->bigInteger('user_id', false, true)->nullable();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
