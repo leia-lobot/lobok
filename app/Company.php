@@ -12,4 +12,12 @@ class Company extends Model
     {
         return "/companies/{$this->id}";
     }
+
+    public function reservations() {
+        return $this->hasMany('App\Reservation');
+    }
+
+    public function users() {
+        return $this->hasMany('App\User');
+    }
 }
