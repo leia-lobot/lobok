@@ -7,13 +7,13 @@ use App\Resource;
 
 class ResourcesController extends Controller
 {
-    public function store() {
-        
+    public function store()
+    {
         // Auth
 
         // Validate
         request()->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         // Store
@@ -23,9 +23,28 @@ class ResourcesController extends Controller
         return redirect('/resources');
     }
 
-    public function index() {
+    public function index()
+    {
         $resources = Resource::all();
 
         return view('resources.index', compact('resources'));
+    }
+
+    public function update($rs)
+    {
+        $rs = Resource::where('slug', $rs)->firstOrFail();
+        // Validate
+        request()->validate([
+            'name' => 'required',
+        ]);
+
+        // Update
+        if (request('name') != $rs->name) {
+            $rs->slug = null;
+            $rs->update(request(['name']));
+        }
+
+        // Redirect
+        return redirect('/resources');
     }
 }

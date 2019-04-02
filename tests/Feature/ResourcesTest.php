@@ -69,4 +69,27 @@ class ResourcesTest extends TestCase
         // Assert
         $this->assertDatabaseMissing('resources', $attributes);
     }
+
+    /** @test */
+    public function an_administrator_can_edit_a_resource()
+    {
+        $this->withoutExceptionHandling();
+        // Arrange
+        $user = factory('App\User')->create()->addRole(UserRole::ROLE_ADMIN);
+        $this->actingAs($user);
+        $resource = factory('App\Resource')->create([
+            'name' => 'Fubar',
+        ]);
+
+        $attributes = [
+            'name' => $this->faker->title,
+        ];
+
+        // Act
+        $this->patch($resource->path(), $attributes)->assertRedirect('/resources');
+
+        // Assert
+        $this->assertDatabaseHas('resources', $attributes);
+        $this->get('/resources')->assertSee($attributes['name']);
+    }
 }
