@@ -34,13 +34,13 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'roles' => 'array'
+        'roles' => 'array',
     ];
 
-    public function company() {
+    public function company()
+    {
         return $this->belongsTo('App\Company');
     }
-
 
     public function addRole(string $role)
     {
@@ -64,11 +64,18 @@ class User extends Authenticatable
     {
         $currentRoles = $this->getRoles();
 
-        foreach($roles as $role) {
-            if(!in_array($role, $currentRoles)) {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if (!in_array($role, $currentRoles)) {
+                    return false;
+                }
+            }
+        } else {
+            if (!in_array($roles, $currentRoles)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -76,7 +83,7 @@ class User extends Authenticatable
     {
         $roles = $this->getAttribute('roles');
 
-        if(is_null($roles)) {
+        if (is_null($roles)) {
             $roles = [];
         }
 

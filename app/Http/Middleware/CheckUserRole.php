@@ -8,7 +8,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class CheckUserRole
 {
-
     protected $roleChecker;
 
     public function __Construct(RoleChecker $roleChecker)
@@ -19,16 +18,19 @@ class CheckUserRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role)
     {
-        $user = auth()->user();
-
-        if(! $this->roleChecker->check($user, $role)) {
-            throw new AuthorizationException('You do not have permission to view this page');
+        if (($user = auth()->user()) instanceof \App\User) {
+            if (!$this->roleChecker->check($user, $role)) {
+                throw new AuthorizationException('You do not have permission to view this page');
+            }
+        } else {
+            return redirect('/login');
         }
 
         return $next($request);

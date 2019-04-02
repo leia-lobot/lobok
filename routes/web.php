@@ -1,5 +1,6 @@
 <?php
 
+use App\Role\UserRole;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,5 +26,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/reservations', 'ReservationsController@store');
 Route::get('/reservations', 'ReservationsController@index');
 
-Route::post('/resources', 'ResourcesController@store');
+Route::post('/resources', 'ResourcesController@store')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
 Route::get('/resources', 'ResourcesController@index');
