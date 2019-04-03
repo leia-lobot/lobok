@@ -7,6 +7,21 @@ use App\Resource;
 
 class ResourcesController extends Controller
 {
+    public function index()
+    {
+        $resources = Resource::all();
+
+        return view('resources.index', compact('resources'));
+    }
+
+    public function show($rs)
+    {
+        $resource = Resource::where('slug', $rs)->firstOrFail();
+        $extras = $resource->extras()->get();
+
+        return view('resources.show', compact(['resource', 'extras']));
+    }
+
     public function store()
     {
         // Auth
@@ -21,13 +36,6 @@ class ResourcesController extends Controller
 
         // Redirect
         return redirect('/resources');
-    }
-
-    public function index()
-    {
-        $resources = Resource::all();
-
-        return view('resources.index', compact('resources'));
     }
 
     public function update($rs)
@@ -45,6 +53,15 @@ class ResourcesController extends Controller
         }
 
         // Redirect
+        return redirect('/resources');
+    }
+
+    public function destroy($rs)
+    {
+        $rs = Resource::where('slug', $rs)->firstOrFail();
+
+        $rs->delete();
+
         return redirect('/resources');
     }
 }

@@ -16,6 +16,11 @@ class Resource extends Model
         return $this->belongsToMany('App\Booking');
     }
 
+    public function extras()
+    {
+        return $this->belongsToMany('App\Extras');
+    }
+
     public function path()
     {
         return "/resources/{$this->slug}";
@@ -25,8 +30,8 @@ class Resource extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 
