@@ -6,15 +6,18 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Company;
+use App\Role\UserRole;
 
 class CompaniesTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function a_user_can_create_a_company()
+    public function a_manager_can_create_a_company()
     {
         $this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
 
         $attributes = [
             'name' => $this->faker->name,
@@ -24,8 +27,23 @@ class CompaniesTest extends TestCase
         $this->post('/companies', $attributes)->assertRedirect('/companies');
 
         $this->assertDatabaseHas('companies', $attributes);
+    }
 
-        $this->get('/companies')->assertSee($attributes['name']);
+    /** @test */
+    public function an_employer_can_not_create_a_company()
+    {
+        // $this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+
+        $attributes = [
+            'name' => $this->faker->name,
+        ];
+
+        // a user can create a company
+        $this->post('/companies', $attributes)->assertForbidden();
+
+        $this->assertDatabaseMissing('companies', $attributes);
     }
 
     /** @test */
@@ -42,8 +60,14 @@ class CompaniesTest extends TestCase
     /** @test */
     public function a_company_requires_a_name()
     {
-        $attributes = factory(Company::class)->raw(['name' => '']);
+        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+
+        $attributes = [
+            'name' => '',
+        ];
 
         $this->post('/companies', $attributes)->assertSessionHasErrors('name');
+
+        $this->assertDatabaseMissing('companies', $attributes);
     }
 }
