@@ -28,19 +28,13 @@ class ReservationsController extends Controller
         // Creation
         $user = auth()->user();
 
-
         $attributes = request(['title', 'description', 'resource_id', 'start_time', 'end_time']);
         $attributes['user_id'] = $user->id;
 
-        if($user->company instanceof \App\Company) {
+        if ($user->company instanceof \App\Company) {
             $user->company->reservations()->create($attributes);
-
-            // Redirect
-            return redirect('/reservations');
         } else {
             return response('Need to belong to a company to add a reservation', 403);
         }
-
-        
     }
 }

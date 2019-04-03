@@ -4,23 +4,20 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Role\UserRole;
 
 class ReservationsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_create_a_reservation()
+    public function an_employee_can_create_a_reservation()
     {
         $this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create([
-            'company_id' => factory('App\Company')
-        ]);
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
 
         $resource = factory('App\Resource')->create();
-
-        $this->actingAs($user);
 
         $attributes = [
             'title' => 'Hodorton',
@@ -31,11 +28,9 @@ class ReservationsTest extends TestCase
         ];
 
         // a user can create a company
-        $this->post('/reservations', $attributes)->assertRedirect('/reservations');
+        $this->post('/reservations', $attributes);
 
         $this->assertDatabaseHas('reservations', $attributes);
-
-        $this->get('/reservations')->assertSee($attributes['title']);
     }
 
     /** @test */
@@ -43,11 +38,9 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create();
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE, []);
 
         $resource = factory('App\Resource')->create();
-
-        $this->actingAs($user);
 
         $attributes = [
             'title' => 'Hodorton',
@@ -68,19 +61,13 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-         $user = factory('App\User')->create([
-            'company_id' => factory('App\Company')
-        ]);
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
         //$resource = factory('App\Resource')->create();
-        $company = factory('App\Company')->create();
-
-        $this->actingAs($user);
 
         $attributes = [
             'title' => 'Hodorton',
             'description' => 'Hodor speaks',
             //'resource_id' => $resource->id,
-            'company_id' => $company->id,
             'start_time' => now(),
             'end_time' => now()->addHour(2),
         ];
@@ -96,19 +83,14 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create([
-            'company_id' => factory('App\Company')
-        ]);
-        $resource = factory('App\Resource')->create();
-        $company = factory('App\Company')->create();
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
 
-        $this->actingAs($user);
+        $resource = factory('App\Resource')->create();
 
         $attributes = [
             'title' => 'Hodorton',
             'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'company_id' => $company->id,
             'start_time' => now()->subDay(5),
             'end_time' => now()->addHour(2),
         ];
@@ -124,19 +106,14 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $user = factory('App\User')->create([
-            'company_id' => factory('App\Company')
-        ]);
-        $resource = factory('App\Resource')->create();
-        $company = factory('App\Company')->create();
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
 
-        $this->actingAs($user);
+        $resource = factory('App\Resource')->create();
 
         $attributes = [
             'title' => 'Hodorton',
             'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'company_id' => $company->id,
             'start_time' => now(),
             'end_time' => now()->subHour(2),
         ];
