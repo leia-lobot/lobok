@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Reservation\State;
 
 class ReservationTest extends TestCase
 {
@@ -28,13 +29,6 @@ class ReservationTest extends TestCase
         $this->assertEquals($company->id, $booking->company->id);
     }
 
-    /*
-        'title' => 'Hodorton',
-        'description' => 'Hodor speaks',
-        'start_time' => now(),
-        'end_time' => now()->addHour(2),
-    */
-
     /** @test */
     public function a_reservation_requires_a_resource()
     {
@@ -43,4 +37,18 @@ class ReservationTest extends TestCase
 
         $this->assertEquals($resource->name, $booking->resource->name);
     }
+
+    /** @test */
+    public function a_reservation_is_pending_as_default_state()
+    {
+        $resource = factory('App\Resource')->create([
+            'name' => 'Luminara'
+        ]);
+        $reservation = factory('App\Reservation')->create([
+            'resource_id' => $resource->id
+        ]);
+
+        $this->assertEquals(State::STATE_PENDING, $reservation->state);
+    }
+
 }

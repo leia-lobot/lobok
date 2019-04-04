@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Reservation\State;
 
 class Reservation extends Model
 {
     protected $guarded = [];
+    protected $attributes = [
+        'state' => State::STATE_PENDING
+    ];
 
     public function extras()
     {
@@ -26,5 +30,10 @@ class Reservation extends Model
     public function resource()
     {
         return $this->belongsTo('App\Resource');
+    }
+
+    public function path()
+    {
+        return "/reservations/{$this->id}";
     }
 }

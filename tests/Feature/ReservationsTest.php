@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Role\UserRole;
+use App\Reservation\State;
 
 class ReservationsTest extends TestCase
 {
@@ -122,5 +123,113 @@ class ReservationsTest extends TestCase
         $this->post('/reservations', $attributes)->assertSessionHasErrors('end_time');
 
         $this->assertDatabaseMissing('reservations', $attributes);
+    }
+
+       /** @test */
+       public function a_manager_can_only_change_to_a_valid_state()
+       {
+           //$this->withoutExceptionHandling();
+
+           $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+
+           $resource = factory('App\Resource')->create([
+               'name' => 'Luminara'
+           ]);
+           $reservation = factory('App\Reservation')->create([
+               'title' => 'Hodorton',
+               'description' => 'Hodor speaks',
+               'resource_id' => $resource->id,
+               'start_time' => now(),
+               'end_time' => now()->subHour(2)
+           ]);
+
+
+           $this->assertEquals(State::STATE_PENDING, $reservation->state);
+
+           $this->post($reservation->path() . '/state', ['state' => 2])->assertSessionHasErrors('state');
+
+           $this->assertEquals(State::STATE_PENDING, $reservation->fresh()->state);
+
+       }
+
+    /** @test */
+    public function a_manager_can_change_reservation_state()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+
+        $resource = factory('App\Resource')->create([
+            'name' => 'Luminara'
+        ]);
+        $reservation = factory('App\Reservation')->create([
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
+            'resource_id' => $resource->id,
+            'start_time' => now(),
+            'end_time' => now()->subHour(2)
+        ]);
+
+
+        $this->assertEquals(State::STATE_PENDING, $reservation->state);
+
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED]);
+
+        $this->assertEquals(State::STATE_ACCEPTED, $reservation->fresh()->state);
+
+    }
+
+    /** @test */
+    public function an_admin_can_change_reservation_state()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+
+        $resource = factory('App\Resource')->create([
+            'name' => 'Luminara'
+        ]);
+        $reservation = factory('App\Reservation')->create([
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
+            'resource_id' => $resource->id,
+            'start_time' => now(),
+            'end_time' => now()->subHour(2)
+        ]);
+
+
+        $this->assertEquals(State::STATE_PENDING, $reservation->state);
+
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED]);
+
+        $this->assertEquals(State::STATE_ACCEPTED, $reservation->fresh()->state);
+
+    }
+
+    /** @test */
+    public function an_employer_can_not_change_reservation_state()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+
+        $resource = factory('App\Resource')->create([
+            'name' => 'Luminara'
+        ]);
+        $reservation = factory('App\Reservation')->create([
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
+            'resource_id' => $resource->id,
+            'start_time' => now(),
+            'end_time' => now()->subHour(2)
+        ]);
+
+
+        $this->assertEquals(State::STATE_PENDING, $reservation->state);
+
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED])->assertForbidden();
+
+        $this->assertEquals(State::STATE_PENDING, $reservation->fresh()->state);
+
     }
 }
