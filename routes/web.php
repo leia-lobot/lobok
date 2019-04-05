@@ -36,6 +36,7 @@ Route::post('/companies', 'CompaniesController@store')->middleware('check_user_r
 
 // Reservations
 Route::post('/reservations', 'ReservationsController@store')->middleware('check_user_role:'.UserRole::ROLE_EMPLOYEE);
+Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('check_user_role:'.UserRole::ROLE_EMPLOYEE);
 Route::get('/reservations', 'ReservationsController@index')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
 
 Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);

@@ -37,4 +37,31 @@ class ReservationsController extends Controller
             return response('Need to belong to a company to add a reservation', 403);
         }
     }
+
+    public function update($id)
+    {
+        $reservation = Reservation::where('id', $id)->first();
+
+        // Validate
+        $validate = request()->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'resource_id' => 'required|exists:resources,id',
+            'start_time' => 'required|date|after:yesterday',
+            'end_time' => 'required|date|after:start_time',
+        ]);
+
+        // Update
+
+        $reservation->update(request([
+            'title',
+            'description',
+            'resource_id',
+            'start_time',
+            'end_time',
+        ]));
+
+        // Redirect
+        return redirect('/resources');
+    }
 }
