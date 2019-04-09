@@ -40,3 +40,6 @@ Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware(
 Route::get('/reservations', 'ReservationsController@index')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
 
 Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
+
+Route::get('/settings', 'SettingsController@index')->name('settings')->middleware('check_user_role:'.UserRole::ROLE_ADMIN);
+Route::post('/settings', 'SettingsController@store')->name('settings.store')->middleware('check_user_role:'.UserRole::ROLE_ADMIN);
