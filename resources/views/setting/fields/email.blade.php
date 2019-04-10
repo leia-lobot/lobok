@@ -1,1 +1,0 @@
-@include('setting.fields._text')

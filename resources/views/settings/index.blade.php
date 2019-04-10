@@ -30,8 +30,9 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-7  col-md-offset-2">
+                                            
                                             @foreach($fields['elements'] as $field)
-                                                @includeIf('setting.fields.' . $field['type'] )
+                                                @includeIf('settings.fields.' . $field['type'] )
                                             @endforeach
                                         </div>
                                     </div>
