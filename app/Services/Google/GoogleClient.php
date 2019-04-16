@@ -5,12 +5,14 @@ namespace App\Services\Google;
 use App\Services\Google\Contracts\Client;
 use Google_Client;
 use Google_Service_Calendar;
+use Google_Service_Calendar_Calendar;
 
 class GoogleClient implements Client
 {
     public $config;
 
     public $client;
+    public $service;
 
     public $args;
 
@@ -18,15 +20,13 @@ class GoogleClient implements Client
     {
         $this->config = $config;
 
-        //$this->setupClient();
+        $this->setupClient();
+        $this->setupService();
+
+        dd($this->getCalendarById('4nb5hnc0704u1lk70i3fmjasg8@group.calendar.google.com'));
     }
 
-    public function getCalendars()
-    {
-        return [];
-    }
-
-    private function getClient()
+    private function setupClient()
     {
         $client = new Google_Client();
         $client->setApplicationName('Google Calendar API PHP Quickstart');
@@ -48,50 +48,53 @@ class GoogleClient implements Client
         $client->setAccessType('offline');
         $client->setPrompt('select_account consent');
 
-        // Load previously authorized token from a file, if it exists.
-        // The file token.json stores the user's access and refresh tokens, and is
-        // created automatically when the authorization flow completes for the first
-        // time.
-
-        return $client;
+        $this->client = $client;
     }
 
-    public function getService()
+    public function setupService()
     {
         // Get the API client and construct the service object.
-        $client = $this->getClient();
-        $service = new Google_Service_Calendar($client);
+        $service = new Google_Service_Calendar($this->client);
 
-        // Print the next 10 events on the user's calendar.
-        $calendarId = 'primary';
+        $this->service = $service;
+    }
 
-        $results = $service->events->listEvents($calendarId);
-        $events = $results->getItems();
+    public function createAndReturnCalendar($title)
+    {
+        $calendar = new Google_Service_Calendar_Calendar();
+        $calendar->setSummary($title);
+        $calendar->setTimeZone('Europe/Stockholm');
 
-        if (empty($events)) {
-            echo "No upcoming events found.\n";
-        } else {
-            echo "Upcoming events:\n";
-            foreach ($events as $event) {
-                $start = $event->start->dateTime;
-                if (empty($start)) {
-                    $start = $event->start->date;
-                }
-                printf("%s (%s)\n", $event->getSummary(), $start);
-            }
-        }
+        $createdCalendar = $this->service->calendars->insert($calendar);
+
+        return $createdCalendar->getId();
+    }
+
+    public function listCalendars()
+    {
+        return $this->service->calendarList->listCalendarList();
+    }
+
+    public function getCalendarById($id)
+    {
+        return $this->service->calendars->get($id);
+    }
+
+    public function updateCalendar($id, $newtitle)
+    {
+        $calendar = $this->service->calendars->get($id);
+        $calendar->setSummary($newtitle);
+
+        $updatedCalendar = $this->service->calendars->update($id, $calendar);
+    }
+
+    public function clearCalendar($id)
+    {
+        $this->service->calendars->clear($id);
+    }
+
+    public function deleteCalendar($id)
+    {
+        $this->service->calendars->delete($id);
     }
 }
-
-    /*
-     * 'service' => [
-
-        | Enable service account auth or not.
-
-        'enable' => env('GOOGLE_SERVICE_ENABLED', false),
-
-        | Path to service account json file
-
-        'file' => env('GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION', ''),
-    ],
-     */
