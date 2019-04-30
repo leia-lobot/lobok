@@ -7,24 +7,19 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Services\Google;
+use App\Services\GoogleCalendar;
 
 class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-
-    protected $googleAcccount;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($googleAccount)
-    {
-        $this->googleAcccount = $googleAccount;   
-    }
+    public function __construct()
+    { }
 
     /**
      * Execute the job.
@@ -38,9 +33,7 @@ class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements Sh
 
     public function getGoogleService()
     {
-        return app(Google::class)
-            ->connectUsing($this->googleAcccount->token)
-            ->service('Calendar');
+        return app(GoogleCalendar::class);
     }
 
     public function getGoogleRequest($service, $options)
@@ -50,7 +43,7 @@ class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements Sh
 
     public function syncItem($googleCalendar)
     {
-        if($googleCalendar->deleted) {
+        if ($googleCalendar->deleted) {
             return $this->googleAcccount->calendars()
                 ->where('google_id', $googleCalendar->id)
                 ->get()->each->delete();
@@ -61,9 +54,9 @@ class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements Sh
                 'google_id' => $googleCalendar->id,
             ],
             [
-            'name' => $googleCalendar->summary,
-            'color' => $googleCalendar->backgroundColor,
-            'timezone' => $googleCalendar->timeZone
+                'name' => $googleCalendar->summary,
+                'color' => $googleCalendar->backgroundColor,
+                'timezone' => $googleCalendar->timeZone
             ]
         );
     }

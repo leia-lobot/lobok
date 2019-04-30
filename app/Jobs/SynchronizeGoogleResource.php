@@ -12,25 +12,15 @@ abstract class SynchronizeGoogleResource
      */
     public function handle()
     {
-        // Start with an empty page token
-        $pageToken = null;
-
         // Delegate service instantiation to sub class.
         $service = $this->getGoogleService();
 
-        do {
-            // Ask the sub class to perform an API call with this pageToken
-            $list = $this->getGoogleRequest($service, compact('pageToken'));
+        $list = $this->getGoogleRequest($service, null);
 
-            foreach ($list->getItems() as $item) {
-                // The sub class is responsible for mappting the data into our database
-                $this->syncItem($item);
-            }
-
-            $pageToken = $list->getNextPageToken();
-
-
-        } while ($pageToken);
+        foreach ($list->getItems() as $item) {
+            // The sub class is responsible for mappting the data into our database
+            $this->syncItem($item);
+        }
     }
 
     abstract public function getGoogleService();

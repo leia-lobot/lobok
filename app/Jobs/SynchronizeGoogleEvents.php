@@ -29,7 +29,6 @@ class SynchronizeGoogleEvents extends SynchronizeGoogleResource implements Shoul
     public function getGoogleService()
     {
         return app(Google::class)
-            ->connectUsing($this->calendar->googleAccount->token)
             ->service('Calendar');
     }
 
@@ -37,13 +36,14 @@ class SynchronizeGoogleEvents extends SynchronizeGoogleResource implements Shoul
     {
         return $service->events->listEvents(
             // We provide the Google ID of the calendar from whicch we want the events.
-            $this->calendar->google_id, $options
+            $this->calendar->google_id,
+            $options
         );
     }
 
     public function syncItem($googleEvent)
     {
-        if($googleEvent->status === 'cancelled') {
+        if ($googleEvent->status === 'cancelled') {
             return $this->calendar->events()
                 ->where('google_id', $googleEvent->id)
                 ->delete();
@@ -63,12 +63,14 @@ class SynchronizeGoogleEvents extends SynchronizeGoogleResource implements Shoul
         );
     }
 
-    protected function isAllDayEvent($googleEvent) {
+    protected function isAllDayEvent($googleEvent)
+    {
         return !$googleEvent->start->dateTime && !$googleEvent->end->dateTime;
-     }
+    }
 
-    protected function parseDatetime($googleDatetime) {
-        $rawDateTime = $googleDatetime->dateTime?: $googleDatetime->date;
+    protected function parseDatetime($googleDatetime)
+    {
+        $rawDateTime = $googleDatetime->dateTime ?: $googleDatetime->date;
 
         return Carbon::parse($rawDateTime)->setTimezone(config('app.timezone'));
     }
