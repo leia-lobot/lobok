@@ -3,7 +3,7 @@
             
     <ul class="list-reset flex flex-col">
         <li class=" w-full h-full py-3 px-2 border-b border-light-border bg-white">
-            <a href="#"
+            <a href="{{route('home')}}"
                class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
                 <i class="fas fa-tachometer-alt float-left mx-2"></i>
                 Dashboard
@@ -11,10 +11,10 @@
             </a>
         </li>
         <li class="w-full h-full py-3 px-2 border-b border-light-border">
-            <a href="#"
+            <a href="{{route('companies/index')}}"
                class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
                 <i class="fab fa-wpforms float-left mx-2"></i>
-                Forms
+                Company
                 <span><i class="fa fa-angle-right float-right"></i></span>
             </a>
         </li>
