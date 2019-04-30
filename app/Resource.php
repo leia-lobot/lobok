@@ -11,9 +11,18 @@ class Resource extends Model
 
     protected $guarded = [];
 
-    public function bookings()
+    public static function boot()
     {
-        return $this->belongsToMany('App\Booking');
+        parent::boot();
+
+        static::created(function ($googleAccount) {
+            SynchronizeGoogleCalendars::dispatch($googleAccount);
+        });
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany('App\Reservation');
     }
 
     public function extras()

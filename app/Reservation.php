@@ -17,9 +17,9 @@ class Reservation extends Model
         return $this->hasMany('App\Extras');
     }
 
-    public function user()
+    public function booker()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasMany('App\User');
     }
 
     public function company()
@@ -35,5 +35,20 @@ class Reservation extends Model
     public function path()
     {
         return "/reservations/{$this->id}";
+    }
+
+    public function getStartedAtAttribute($start)
+    {
+        return $this->asDateTime($start)->setTimezone(config('app.timezone'));
+    }
+
+    public function getEndedAtAttribute($end)
+    {
+        return $this->asDateTime($end)->setTimezone(config('app.timezone'));
+    }
+
+    public function getDurationAttribute()
+    {
+        return $this->started_at->diffForHumans($this->ended_at, true);
     }
 }
