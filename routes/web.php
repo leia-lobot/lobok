@@ -27,19 +27,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/resources', 'ResourcesController@index');
 Route::get('/resources/{resource}', 'ResourcesController@show');
 
-Route::post('/resources', 'ResourcesController@store')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
-Route::patch('/resources/{resource}', 'ResourcesController@update')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
-Route::delete('/resources/{resource}', 'ResourcesController@destroy')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
+Route::post('/resources', 'ResourcesController@store')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::patch('/resources/{resource}', 'ResourcesController@update')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::delete('/resources/{resource}', 'ResourcesController@destroy')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
 
 // Companies
-Route::post('/companies', 'CompaniesController@store')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
+Route::post('/companies', 'CompaniesController@store')->name('companies/store')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::get('/companies', 'CompaniesController@index')->name('companies/index')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
 
 // Reservations
-Route::post('/reservations', 'ReservationsController@store')->middleware('check_user_role:'.UserRole::ROLE_EMPLOYEE);
-Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('check_user_role:'.UserRole::ROLE_EMPLOYEE);
-Route::get('/reservations', 'ReservationsController@index')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
+Route::post('/reservations', 'ReservationsController@store')->middleware('check_user_role:' . UserRole::ROLE_EMPLOYEE);
+Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('check_user_role:' . UserRole::ROLE_EMPLOYEE);
+Route::get('/reservations', 'ReservationsController@index')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
 
-Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('check_user_role:'.UserRole::ROLE_MANAGER);
+Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
 
 Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::post('/settings', 'SettingsController@store')->name('settings.store');

@@ -17,7 +17,7 @@ class Reservation extends Model
         return $this->hasMany('App\Extras');
     }
 
-    public function booker()
+    public function user()
     {
         return $this->hasMany('App\User');
     }

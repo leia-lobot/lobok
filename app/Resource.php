@@ -15,9 +15,9 @@ class Resource extends Model
     {
         parent::boot();
 
-        static::created(function ($googleAccount) {
-            SynchronizeGoogleCalendars::dispatch($googleAccount);
-        });
+        // static::created(function ($googleAccount) {
+        //     SynchronizeGoogleCalendars::dispatch($googleAccount);
+        // });
     }
 
     public function reservations()

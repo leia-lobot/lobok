@@ -8,18 +8,22 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\GoogleCalendar;
+use App\Services\GoogleClient;
 
 class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $client;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
-    { }
+    public function __construct(GoogleClient $client)
+    {
+        $this->client = $client;
+    }
 
     /**
      * Execute the job.
@@ -44,12 +48,12 @@ class SynchronizeGoogleCalendars extends SynchronizeGoogleResource implements Sh
     public function syncItem($googleCalendar)
     {
         if ($googleCalendar->deleted) {
-            return $this->googleAcccount->calendars()
+            return $this->client->calendars()
                 ->where('google_id', $googleCalendar->id)
                 ->get()->each->delete();
         }
 
-        $this->googleAcccount->calendars()->updateOrCreate(
+        $this->client->calendars()->updateOrCreate(
             [
                 'google_id' => $googleCalendar->id,
             ],
