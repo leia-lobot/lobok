@@ -1,6 +1,5 @@
 <?php
 
-use App\Role\UserRole;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,20 +26,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/resources', 'ResourcesController@index');
 Route::get('/resources/{resource}', 'ResourcesController@show');
 
-Route::post('/resources', 'ResourcesController@store')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
-Route::patch('/resources/{resource}', 'ResourcesController@update')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
-Route::delete('/resources/{resource}', 'ResourcesController@destroy')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::post('/resources', 'ResourcesController@store')->middleware('role:manager');
+Route::patch('/resources/{resource}', 'ResourcesController@update')->middleware('role:manager');
+Route::delete('/resources/{resource}', 'ResourcesController@destroy')->middleware('role:manager');
 
 // Companies
-Route::post('/companies', 'CompaniesController@store')->name('companies/store')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
-Route::get('/companies', 'CompaniesController@index')->name('companies/index')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::post('/companies', 'CompaniesController@store')->name('companies/store')->middleware('role:manager');
+Route::get('/companies', 'CompaniesController@index')->name('companies/index')->middleware('role:manager');
 
 // Reservations
-Route::post('/reservations', 'ReservationsController@store')->middleware('check_user_role:' . UserRole::ROLE_EMPLOYEE);
-Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('check_user_role:' . UserRole::ROLE_EMPLOYEE);
-Route::get('/reservations', 'ReservationsController@index')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::post('/reservations', 'ReservationsController@store')->middleware('role:employee');
+Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('role:employee');
+Route::get('/reservations', 'ReservationsController@index')->middleware('role:manager');
 
-Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('check_user_role:' . UserRole::ROLE_MANAGER);
+Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('role:manager');
 
 Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::post('/settings', 'SettingsController@store')->name('settings.store');

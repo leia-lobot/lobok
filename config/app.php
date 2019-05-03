@@ -174,6 +174,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\GoogleServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*

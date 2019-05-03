@@ -10,6 +10,7 @@
                 <span><i class="fas fa-angle-right float-right"></i></span>
             </a>
         </li>
+        @role('admin')
         <li class="w-full h-full py-3 px-2 border-b border-light-border">
             <a href="{{route('companies/index')}}"
                class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">
@@ -18,6 +19,7 @@
                 <span><i class="fa fa-angle-right float-right"></i></span>
             </a>
         </li>
+        @endrole
         <li class="w-full h-full py-3 px-2 border-b border-light-border">
             <a href="#"
                class="font-sans font-hairline hover:font-normal text-sm text-nav-item no-underline">

@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\Google;
+use App\Services\GoogleClient;
 
 class GoogleClientTest extends TestCase
 {
@@ -13,7 +13,7 @@ class GoogleClientTest extends TestCase
     /** @test */
     public function it_can_connect_to_google_calendar()
     {
-        $gc = new Google();
+        $gc = new GoogleClient();
         $service = $gc->service("Calendar");
     }
 
