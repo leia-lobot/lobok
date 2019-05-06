@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Role\UserRole;
 
 class ResourcesTest extends TestCase
 {
@@ -17,7 +16,7 @@ class ResourcesTest extends TestCase
         $this->withoutExceptionHandling();
         // Arrange
 
-        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+        $this->actAsUserWithRole('admin');
 
         $attributes = [
             'name' => $this->faker->sentence,
@@ -36,7 +35,7 @@ class ResourcesTest extends TestCase
     {
         $this->withoutExceptionHandling();
         // Arrange
-        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+        $this->actAsUserWithRole('manager');
 
         $attributes = [
             'name' => $this->faker->sentence,
@@ -55,7 +54,7 @@ class ResourcesTest extends TestCase
     {
         //$this->withoutExceptionHandling();
         // Arrange
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+        $this->actAsUserWithRole('employer');
 
         $attributes = [
             'name' => $this->faker->sentence,
@@ -73,7 +72,7 @@ class ResourcesTest extends TestCase
     {
         $this->withoutExceptionHandling();
         // Arrange
-        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+        $this->actAsUserWithRole('admin');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Fubar',
@@ -96,7 +95,7 @@ class ResourcesTest extends TestCase
     {
         //$this->withoutExceptionHandling();
         // Arrange
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+        $this->actAsUserWithRole('employer');
         $resource = factory('App\Resource')->create([
             'name' => 'Fubar',
         ]);
@@ -115,7 +114,7 @@ class ResourcesTest extends TestCase
     /** @test */
     public function an_administrator_can_delete_a_resource()
     {
-        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+        $this->actAsUserWithRole('admin');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Fubar',
@@ -131,11 +130,11 @@ class ResourcesTest extends TestCase
     /** @test */
     public function an_employer_can_not_delete_a_resource()
     {
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+        $this->actAsUserWithRole('employer');
 
         $resource = factory('App\Resource')->create([
-             'name' => 'Fubar',
-         ]);
+            'name' => 'Fubar',
+        ]);
 
         // Act
         $this->delete($resource->path())->assertForbidden();
@@ -145,26 +144,26 @@ class ResourcesTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_resource()
+    public function a_manager_can_view_a_resource()
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('manager');
 
         $resource = factory('App\Resource')->create([
-             'name' => 'Fubar',
-         ]);
+            'name' => 'Fubar',
+        ]);
 
         // Act
         $this->get($resource->path())->assertSee($resource->name);
     }
 
     /** @test */
-    public function a_user_can_list_all_resources()
+    public function a_manager_can_list_all_resources()
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('manager');
 
         $resource = factory('App\Resource', 5)->create();
 
