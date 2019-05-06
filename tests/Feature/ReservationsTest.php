@@ -16,7 +16,7 @@ class ReservationsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
 
@@ -39,7 +39,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE, []);
+        $this->actAsUserWithRole('employee', []);
 
         $resource = factory('App\Resource')->create();
 
@@ -62,7 +62,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('employee');
         //$resource = factory('App\Resource')->create();
 
         $attributes = [
@@ -84,7 +84,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
 
@@ -107,7 +107,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYEE);
+        $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
 
@@ -130,22 +130,22 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+        $this->actAsUserWithRole('manager');
 
         $resource = factory('App\Resource')->create([
-               'name' => 'Luminara',
-           ]);
+            'name' => 'Luminara',
+        ]);
         $reservation = factory('App\Reservation')->create([
-               'title' => 'Hodorton',
-               'description' => 'Hodor speaks',
-               'resource_id' => $resource->id,
-               'start_time' => now(),
-               'end_time' => now()->subHour(2),
-           ]);
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
+            'resource_id' => $resource->id,
+            'start_time' => now(),
+            'end_time' => now()->subHour(2),
+        ]);
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
 
-        $this->post($reservation->path().'/state', ['state' => 2])->assertSessionHasErrors('state');
+        $this->post($reservation->path() . '/state', ['state' => 2])->assertSessionHasErrors('state');
 
         $this->assertEquals(State::STATE_PENDING, $reservation->fresh()->state);
     }
@@ -155,7 +155,7 @@ class ReservationsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+        $this->actAsUserWithRole('manager');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Luminara',
@@ -170,7 +170,7 @@ class ReservationsTest extends TestCase
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
 
-        $this->post($reservation->path().'/state', ['state' => State::STATE_ACCEPTED]);
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED]);
 
         $this->assertEquals(State::STATE_ACCEPTED, $reservation->fresh()->state);
     }
@@ -180,7 +180,7 @@ class ReservationsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+        $this->actAsUserWithRole('admin');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Luminara',
@@ -195,7 +195,7 @@ class ReservationsTest extends TestCase
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
 
-        $this->post($reservation->path().'/state', ['state' => State::STATE_ACCEPTED]);
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED]);
 
         $this->assertEquals(State::STATE_ACCEPTED, $reservation->fresh()->state);
     }
@@ -205,7 +205,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+        $this->actAsUserWithRole('employer');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Luminara',
@@ -220,7 +220,7 @@ class ReservationsTest extends TestCase
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
 
-        $this->post($reservation->path().'/state', ['state' => State::STATE_ACCEPTED])->assertForbidden();
+        $this->post($reservation->path() . '/state', ['state' => State::STATE_ACCEPTED])->assertForbidden();
 
         $this->assertEquals(State::STATE_PENDING, $reservation->fresh()->state);
     }
@@ -230,7 +230,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_ADMIN);
+        $this->actAsUserWithRole('admin');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Luminara',
