@@ -6,7 +6,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Company;
-use App\Role\UserRole;
 
 class CompaniesTest extends TestCase
 {
@@ -17,7 +16,7 @@ class CompaniesTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+        $this->actAsUserWithRole('admin');
 
         $attributes = [
             'name' => $this->faker->name,
@@ -34,7 +33,7 @@ class CompaniesTest extends TestCase
     {
         // $this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole(UserRole::ROLE_EMPLOYER);
+        $this->actAsUserWithRole('employer');
 
         $attributes = [
             'name' => $this->faker->name,
@@ -47,9 +46,11 @@ class CompaniesTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_company()
+    public function a_manager_can_view_a_company()
     {
         $this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole('manager');
 
         $company = factory(Company::class)->create();
 
@@ -60,7 +61,7 @@ class CompaniesTest extends TestCase
     /** @test */
     public function a_company_requires_a_name()
     {
-        $this->actAsUserWithRole(UserRole::ROLE_MANAGER);
+        $this->actAsUserWithRole('manager');
 
         $attributes = [
             'name' => '',

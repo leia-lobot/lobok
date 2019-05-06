@@ -13,8 +13,10 @@ class CompanyTest extends TestCase
     /** @test */
     public function a_company_has_a_path()
     {
-        $company = factory(Company::class)->create();
+        $company = factory(Company::class)->create([
+            'name' => 'leia yoda'
+        ]);
 
-        $this->assertEquals('/companies/'.$company->id, $company->path());
+        $this->assertEquals('/companies/leia-yoda', $company->path());
     }
 }

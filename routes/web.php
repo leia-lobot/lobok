@@ -22,26 +22,47 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-// Resources
-Route::get('/resources', 'ResourcesController@index');
-Route::get('/resources/{resource}', 'ResourcesController@show');
-
-Route::post('/resources', 'ResourcesController@store')->middleware('role:manager');
-Route::patch('/resources/{resource}', 'ResourcesController@update')->middleware('role:manager');
-Route::delete('/resources/{resource}', 'ResourcesController@destroy')->middleware('role:manager');
-
-// Companies
-Route::post('/companies', 'CompaniesController@store')->name('companies/store')->middleware('role:manager');
-Route::get('/companies', 'CompaniesController@index')->name('companies/index')->middleware('role:manager');
-
-// Reservations
-Route::post('/reservations', 'ReservationsController@store')->middleware('role:employee');
-Route::patch('/reservations/{id}', 'ReservationsController@update')->middleware('role:employee');
-Route::get('/reservations', 'ReservationsController@index')->middleware('role:manager');
-
-Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState')->middleware('role:manager');
-
-Route::get('/settings', 'SettingsController@index')->name('settings');
-Route::post('/settings', 'SettingsController@store')->name('settings.store');
 
 Route::get('/google', 'GoogleController@index');
+
+// Admin only
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::get('/settings', 'SettingsController@index')->name('settings');
+    Route::post('/settings', 'SettingsController@store')->name('settings/store');
+});
+
+
+// Manager + Admin
+Route::group(['middleware' => ['role:admin|manager']], function () {
+
+    Route::get('/companies', 'CompaniesController@index')->name('companies/index');                 // Company::index
+    Route::post('/companies', 'CompaniesController@store')->name('companies/store');                // Company::store
+    Route::get('/companies/{slug}', 'CompaniesController@show')->name('companies/show');            // Company::show
+
+    Route::post('/resources', 'ResourcesController@store')->name('resources/store');                // Resource::store
+    Route::patch('/resources/{resource}', 'ResourcesController@update');                            // Resource::update
+    Route::delete('/resources/{resource}', 'ResourcesController@destroy');                          // Resource::delete
+
+    Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
+    Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState');    // Reservation::toggleState
+
+    Route::get('/resources', 'ResourcesController@index');                                          // Resource::index
+    Route::get('/resources/{resource}', 'ResourcesController@show');                                // Resource::get
+
+});
+
+// Employer + Manager + Admin
+Route::group(['middleware' => ['role:admin|manager|employer']], function () {
+    //
+});
+
+// Employee + Employer + Manager + Admin
+Route::group(['middleware' => ['role:admin|manager|employer|employee']], function () {
+    Route::post('/reservations', 'ReservationsController@store');                                   // Reservation::store    
+    Route::patch('/reservations/{id}', 'ReservationsController@update');                            // Reservation::update
+});
+
+// Unemployed + Employee + Employer + Manager + Admin
+Route::group(['middleware' => ['role:admin|manager|employer|employee|unemployed']], function () {
+    //
+});

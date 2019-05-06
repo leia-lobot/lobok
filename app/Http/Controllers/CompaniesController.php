@@ -27,8 +27,9 @@ class CompaniesController extends Controller
         return redirect('/companies');
     }
 
-    public function show(Company $company)
+    public function show($slug)
     {
+        $company = Company::where('slug', $slug)->first();
         return view('company.show', compact('company'));
     }
 }
