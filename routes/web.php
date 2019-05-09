@@ -53,7 +53,8 @@ Route::group(['middleware' => ['role:admin|manager']], function () {
 
 // Employer + Manager + Admin
 Route::group(['middleware' => ['role:admin|manager|employer']], function () {
-    //
+    Route::get('invite', 'InviteController@invite')->name('invite');
+    Route::post('invite', 'InviteController@process')->name('process');
 });
 
 // Employee + Employer + Manager + Admin
@@ -66,3 +67,7 @@ Route::group(['middleware' => ['role:admin|manager|employer|employee']], functio
 Route::group(['middleware' => ['role:admin|manager|employer|employee|unemployed']], function () {
     //
 });
+
+// {token} is a required parameter that will be exposed to us in the controller method
+Route::post('accept', 'InviteController@store');
+Route::get('accept/{token}', 'InviteController@accept')->name('accept');
