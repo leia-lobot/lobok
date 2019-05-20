@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
   </head>
-  <body class="font-sans antialiased text-black leading-tight">
-    <div id="app">
+  <body>
+    <div id="app" class="w-screen h-screen bg-cover" style="background-image: url('https://res.cloudinary.com/dimcuw4l3/image/upload/ar_16:9,c_fill,e_sharpen,g_auto,w_1000/v1558341494/stil-1487686-unsplash_qelkzg.png')">
       @yield('content')
     </div>
     <script src="{{ mix('js/app.js') }}"></script>

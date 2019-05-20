@@ -9,8 +9,20 @@
  *
  * @import "tailwindcss/preflight";
  */
- @tailwind preflight;
+ @tailwind base;
 
+ @font-face {
+    font-family: Gobold Regular;
+    font-weight: 400;
+    src: url(/fonts/Gobold.ttf) format("tff");
+  }
+  @font-face {
+    font-family: Gobold Lowplus;
+    font-weight: 400;
+    src: url(/fonts/Gobold_Lowplus.ttf) format("tff");
+  }
+
+  
 
  /**
   * This injects any component classes registered by plugins.
@@ -61,5 +73,3 @@
   * @import "utilities/background-patterns";
   * @import "utilities/skew-transforms";
   */
-  @import "components/nav.css";
-  @import "components/logo.css";
