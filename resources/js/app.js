@@ -5,29 +5,76 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import React, { useState, useEffect } from 'react'
+import ReactDOM from 'react-dom'
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+import axios from 'axios'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 
-window.Vue = require('vue');
+moment.locale('en-GB')
+const localizer = BigCalendar.momentLocalizer(moment)
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+const events = [
+  {
+    id: 0,
+    title: 'Board meeting',
+    start: new Date(2018, 0, 29, 9, 0, 0),
+    end: new Date(2018, 0, 29, 13, 0, 0),
+    resourceId: 1,
+  },
+  {
+    id: 1,
+    title: 'MS training',
+    allDay: true,
+    start: new Date(2018, 0, 29, 14, 0, 0),
+    end: new Date(2018, 0, 29, 16, 30, 0),
+    resourceId: 2,
+  },
+  {
+    id: 2,
+    title: 'Team lead meeting',
+    start: new Date(2018, 0, 29, 8, 30, 0),
+    end: new Date(2018, 0, 29, 12, 30, 0),
+    resourceId: 3,
+  },
+  {
+    id: 11,
+    title: 'Birthday Party',
+    start: new Date(2018, 0, 30, 7, 0, 0),
+    end: new Date(2018, 0, 30, 10, 30, 0),
+    resourceId: 4,
+  },
+]
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+const resourceMap = [
+  { resourceId: 1, resourceTitle: 'Board room' },
+  { resourceId: 2, resourceTitle: 'Training room' },
+  { resourceId: 3, resourceTitle: 'Meeting room 1' },
+  { resourceId: 4, resourceTitle: 'Meeting room 2' },
+]
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+function Resource (props){
+  const [events, setEvents] = useState(props.events);
+  const [resourceMap, setResourceMap] = useState(props.resources);
+  return (
+    <BigCalendar
+      events={events}
+      localizer={props.localizer}
+      defaultView={BigCalendar.Views.DAY}
+      views={['day', 'work_week']}
+      step={30}
+      defaultDate={new Date(2018, 0, 29)}
+      resources={resourceMap}
+      resourceIdAccessor="resourceId"
+      resourceTitleAccessor="resourceTitle"
+    />
+  )
+}
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app'
-});
+ReactDOM.render(
+  <Resource 
+    localizer={localizer} 
+    events={events} 
+    resources={resourceMap} 
+  />, document.getElementById("calendar"))
