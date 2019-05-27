@@ -7,7 +7,7 @@
     <ul>
         @forelse ($reservations as $reservation)
             <li>
-                {!! $reservation->title !!}
+                {!! $reservation->title !!} : {!! $reservation->start_time !!} - {!! $reservation->end_time !!}
             </li>
             @empty
                 <li>No reservations yet.</li>
