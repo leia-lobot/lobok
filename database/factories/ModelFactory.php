@@ -31,29 +31,31 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->define(Resource::class, function (Faker $faker) {
     return [
-        'name' => $faker->sentence,
+        'name' => $faker->name,
     ];
 });
 
 $factory->define(Company::class, function (Faker $faker) {
     return [
-        'name' => $faker->sentence,
+        'name' => $faker->company,
     ];
 });
 
 $factory->define(Extras::class, function (Faker $faker) {
-    return [
-    ];
+    return [];
 });
 
 $factory->define(Reservation::class, function (Faker $faker) {
+    $date = now()->subDays(rand(-6, 6));
+    $date = $date->subHour(rand(1, 23));
+    $date = $date->subMinutes(rand(1, 55));
     return [
-        'title' => 'TestEvent',
-        'description' => 'Here we be testing',
+        'title' => $faker->name,
+        'description' => $faker->text,
         'resource_id' => factory(Resource::class)->create(),
         'company_id' => factory(Company::class)->create(),
         'user_id' => factory(User::class)->create(),
-        'start_time' => now(),
-        'end_time' => now()->addHour(1),
+        'start_time' => $date,
+        'end_time' => $date->addHour(rand(1, 5)),
     ];
 });
