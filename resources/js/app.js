@@ -15,48 +15,37 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 moment.locale('en-GB')
 const localizer = BigCalendar.momentLocalizer(moment)
 
-const events = [
-  {
-    id: 0,
-    title: 'Board meeting',
-    start: new Date(2018, 0, 29, 9, 0, 0),
-    end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 1,
-  },
-  {
-    id: 1,
-    title: 'MS training',
-    allDay: true,
-    start: new Date(2018, 0, 29, 14, 0, 0),
-    end: new Date(2018, 0, 29, 16, 30, 0),
-    resourceId: 2,
-  },
-  {
-    id: 2,
-    title: 'Team lead meeting',
-    start: new Date(2018, 0, 29, 8, 30, 0),
-    end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 3,
-  },
-  {
-    id: 11,
-    title: 'Birthday Party',
-    start: new Date(2018, 0, 30, 7, 0, 0),
-    end: new Date(2018, 0, 30, 10, 30, 0),
-    resourceId: 4,
-  },
-]
+const events = []
 
-const resourceMap = [
-  { resourceId: 1, resourceTitle: 'Board room' },
-  { resourceId: 2, resourceTitle: 'Training room' },
-  { resourceId: 3, resourceTitle: 'Meeting room 1' },
-  { resourceId: 4, resourceTitle: 'Meeting room 2' },
-]
+const resourceMap = []
 
 function Resource (props){
   const [events, setEvents] = useState(props.events);
-  const [resourceMap, setResourceMap] = useState(props.resources);
+  const [resourceMap, setResourceMap] = useState(props.resourceMap);
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await axios('http://lobok.test/calendar',)
+      /*
+      'id' => $reservation->id,
+                'title' => $reservation->title,
+                'start' => $reservation->start_time,
+                'end' => $reservation->end_time,
+                'resourceId' => $reservation->resource_id
+                */
+      const reservations = result.data.reservations.map((reserv) => {
+        return {
+          title: reserv.title,
+          start:  moment(reserv.start),
+          end:  moment(reserv.end),
+          resourceId: reserv.resourceId
+        }
+      })
+      setResourceMap(result.data.resources)
+      setEvents(reservations)
+    }
+    fetchData()
+  }, []);
   return (
     <BigCalendar
       events={events}
@@ -64,13 +53,14 @@ function Resource (props){
       defaultView={BigCalendar.Views.DAY}
       views={['day', 'work_week']}
       step={30}
-      defaultDate={new Date(2018, 0, 29)}
+      defaultDate={new Date()}
       resources={resourceMap}
       resourceIdAccessor="resourceId"
       resourceTitleAccessor="resourceTitle"
     />
   )
 }
+
 
 ReactDOM.render(
   <Resource 

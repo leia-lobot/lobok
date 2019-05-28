@@ -43,7 +43,7 @@ Route::group(['middleware' => ['role:admin|manager']], function () {
     Route::patch('/resources/{resource}', 'ResourcesController@update');                            // Resource::update
     Route::delete('/resources/{resource}', 'ResourcesController@destroy');                          // Resource::delete
 
-    Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
+    // Reservation Index
     Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState');    // Reservation::toggleState
 
     Route::get('/resources', 'ResourcesController@index');                                          // Resource::index
@@ -59,8 +59,11 @@ Route::group(['middleware' => ['role:admin|manager|employer']], function () {
 
 // Employee + Employer + Manager + Admin
 Route::group(['middleware' => ['role:admin|manager|employer|employee']], function () {
-    Route::post('/reservations', 'ReservationsController@store');                                   // Reservation::store    
-    Route::patch('/reservations/{id}', 'ReservationsController@update');                            // Reservation::update
+
+    Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store    
+
+    Route::patch('/reservations/{id}', 'ReservationsController@update');
+    Route::delete('/reservations/{id}', 'ReservationsController@destroy');                           // Reservation::update
 });
 
 // Unemployed + Employee + Employer + Manager + Admin
@@ -71,3 +74,13 @@ Route::group(['middleware' => ['role:admin|manager|employer|employee|unemployed'
 // {token} is a required parameter that will be exposed to us in the controller method
 Route::post('accept', 'InviteController@store');
 Route::get('accept/{token}', 'InviteController@accept')->name('accept');
+
+Route::get('seed', function () {
+    factory('App\Reservation', 50)->create();
+});
+
+// TODO
+
+Route::get('/reservations/create', 'ReservationsController@create');
+Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
+Route::get('/calendar', 'CalendarController@index');
