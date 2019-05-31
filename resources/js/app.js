@@ -26,18 +26,11 @@ function Resource (props){
   useEffect(() => {
     async function fetchData() {
       const result = await axios('http://lobok.test/calendar',)
-      /*
-      'id' => $reservation->id,
-                'title' => $reservation->title,
-                'start' => $reservation->start_time,
-                'end' => $reservation->end_time,
-                'resourceId' => $reservation->resource_id
-                */
       const reservations = result.data.reservations.map((reserv) => {
         return {
           title: reserv.title,
-          start:  moment(reserv.start),
-          end:  moment(reserv.end),
+          start:  moment(reserv.start).toDate(),
+          end:  moment(reserv.end).toDate(),
           resourceId: reserv.resourceId
         }
       })
@@ -46,13 +39,17 @@ function Resource (props){
     }
     fetchData()
   }, []);
+
   return (
     <BigCalendar
       events={events}
+      min={new Date(2017, 10, 0, 6, 0, 0)}
+      max={new Date(2017, 10, 0, 22, 0, 0)} 
       localizer={props.localizer}
       defaultView={BigCalendar.Views.DAY}
       views={['day', 'work_week']}
       step={30}
+      timeslots={2}
       defaultDate={new Date()}
       resources={resourceMap}
       resourceIdAccessor="resourceId"
