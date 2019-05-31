@@ -48,14 +48,16 @@ $factory->define(Extras::class, function (Faker $faker) {
 $factory->define(Reservation::class, function (Faker $faker) {
     $date = now()->subDays(rand(-6, 6));
     $date = $date->subHour(rand(1, 23));
-    $date = $date->subMinutes(rand(1, 55));
+    $start_date = $date->copy()->subMinutes(rand(1, 55));
+    $end_date = $start_date->copy()->addHour(rand(1, 5));
+
     return [
         'title' => $faker->name,
         'description' => $faker->text,
         'resource_id' => factory(Resource::class)->create(),
         'company_id' => factory(Company::class)->create(),
         'user_id' => factory(User::class)->create(),
-        'start_time' => $date,
-        'end_time' => $date->addHour(rand(1, 5)),
+        'start_time' => $start_date,
+        'end_time' => $end_date,
     ];
 });
