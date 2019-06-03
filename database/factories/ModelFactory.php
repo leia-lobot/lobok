@@ -47,7 +47,7 @@ $factory->define(Extras::class, function (Faker $faker) {
 
 $factory->define(Reservation::class, function (Faker $faker) {
     $date = now()->subDays(rand(-6, 6));
-    $date = $date->subHour(rand(1, 23));
+    $date = $date->subHour(rand(6, 21));
     $start_date = $date->copy()->subMinutes(rand(1, 55));
     $end_date = $start_date->copy()->addHour(rand(1, 5));
 
