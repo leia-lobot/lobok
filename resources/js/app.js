@@ -10,7 +10,6 @@ import ReactDOM from 'react-dom'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import axios from 'axios'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 moment.locale('en-GB')
 const localizer = BigCalendar.momentLocalizer(moment)

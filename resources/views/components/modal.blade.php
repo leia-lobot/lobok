@@ -24,9 +24,8 @@
         }
         .modal {
             position: relative;
-            width: 1000px;
+            /* width: 1000px; */
             max-width: 80%;
-            background: white;
             border-radius: 8px;
             padding: 1em 2em;
         }
@@ -43,7 +42,7 @@
 
 <div id="{{ $name }}" class="overlay">
     <a href="#" class="cancel"></a>
-    <div class="modal">
+<div class="modal {{ $style }}" >
         {{ $slot }}
         <a href="#" class="close">&times;</a>
     </div>
