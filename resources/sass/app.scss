@@ -61,4 +61,13 @@
   * @import "utilities/skew-transforms";
   */
 
-  @import "components/react-big-calendar.css"
+  @import "components/react-big-calendar.css";
+
+  /**
+    Hack to fix color for timepicker
+  */
+  #react-time-range {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+  }
