@@ -60,7 +60,7 @@ Route::group(['middleware' => ['role:admin|manager|employer']], function () {
 // Employee + Employer + Manager + Admin
 Route::group(['middleware' => ['role:admin|manager|employer|employee']], function () {
 
-    Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store    
+
 
     Route::patch('/reservations/{id}', 'ReservationsController@update');
     Route::delete('/reservations/{id}', 'ReservationsController@destroy');                           // Reservation::update
@@ -76,11 +76,13 @@ Route::post('accept', 'InviteController@store');
 Route::get('accept/{token}', 'InviteController@accept')->name('accept');
 
 Route::get('seed', function () {
-    factory('App\Reservation', 50)->create();
+    factory('App\Reservation', 10)->create();
 });
 
 // TODO
 
 Route::get('/reservations/create', 'ReservationsController@create');
+Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store    
+
 Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
 Route::get('/calendar', 'CalendarController@index');

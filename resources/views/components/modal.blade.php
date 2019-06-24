@@ -32,10 +32,11 @@
 
         .modal .close {
             position: absolute;
-            top: 25px;
+            top: 0px;
             right: 15px;
             color: gray;
             text-decoration: none;
+            font-size: x-large;
         }
     </style>    
 @endsection

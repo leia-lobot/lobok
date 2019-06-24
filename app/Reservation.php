@@ -12,6 +12,11 @@ class Reservation extends Model
         'state' => State::STATE_PENDING
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime'
+    ];
+
     public function extras()
     {
         return $this->hasMany('App\Extras');

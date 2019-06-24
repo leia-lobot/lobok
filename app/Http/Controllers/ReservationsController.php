@@ -25,6 +25,7 @@ class ReservationsController extends Controller
             'end_time' => 'required|date|after:start_time',
         ]);
 
+
         // Creation
         $user = auth()->user();
 
@@ -63,5 +64,16 @@ class ReservationsController extends Controller
 
         // Redirect
         return redirect('/resources');
+    }
+
+    public function destroy($id)
+    {
+        $reservation = Reservation::where('id', $id)->first();
+        $reservation->delete();
+    }
+
+    public function create()
+    {
+        return view('reservations.create');
     }
 }
