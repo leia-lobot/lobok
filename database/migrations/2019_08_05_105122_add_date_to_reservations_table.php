@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddContentToExtrasTable extends Migration
+class AddDateToReservationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddContentToExtrasTable extends Migration
      */
     public function up()
     {
-        Schema::table('extras', function (Blueprint $table) {
-            $table->text('content')->nullable();
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->date('date')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddContentToExtrasTable extends Migration
      */
     public function down()
     {
-        Schema::table('extras', function (Blueprint $table) {
-            $table->dropColumn('content');
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->dropColumn('date');
         });
     }
 }

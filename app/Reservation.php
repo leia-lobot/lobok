@@ -9,12 +9,15 @@ class Reservation extends Model
 {
     protected $guarded = [];
     protected $attributes = [
-        'state' => State::STATE_PENDING
+        'state' => State::STATE_PENDING,
+        'title' => 'test',
+        'description' => 'testing testing'
     ];
 
     protected $casts = [
         'start_time' => 'datetime',
-        'end_time' => 'datetime'
+        'end_time' => 'datetime',
+        'date' => 'date'
     ];
 
     public function extras()
