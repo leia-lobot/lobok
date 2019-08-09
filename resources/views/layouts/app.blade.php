@@ -10,7 +10,7 @@
     @yield('componentcss')
   </head>
   <body>
-    <div id="app" class="w-screen h-screen bg-cover" style="background-image: url('https://res.cloudinary.com/dimcuw4l3/image/upload/ar_16:9,c_fill,e_sharpen,g_auto,w_1000/v1558341494/stil-1487686-unsplash_qelkzg.png')">
+    <div id="app" class="w-screen h-screen bg-cover" style="background-image: url('https://res.cloudinary.com/dimcuw4l3/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1565176364/lobok_background_zrepsk.png')">
       @yield('content')
     </div>
     <script src="{{ mix('js/app.js') }}"></script>

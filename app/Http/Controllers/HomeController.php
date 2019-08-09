@@ -19,6 +19,6 @@ class HomeController extends Controller
         $companies = Company::all();
         $resources = Resource::all();
         //dd($reservations);
-        return view('home', compact(['companies', 'resources']));
+        return view('dashboard', compact(['companies', 'resources']));
     }
 }

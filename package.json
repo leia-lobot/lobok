@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
-        "axios": "^0.18.0",
+        "axios": "^0.19.0",
         "bootstrap": "^4.0.0",
         "cross-env": "^5.1",
         "jquery": "^3.4.1",
@@ -32,6 +32,8 @@
         "moment": "^2.24.0",
         "react": "^16.8.6",
         "react-big-calendar": "^0.21.0",
-        "react-dom": "^16.8.6"
+        "react-datetime": "^2.16.3",
+        "react-dom": "^16.8.6",
+        "react-time-range": "^1.0.4"
     }
 }

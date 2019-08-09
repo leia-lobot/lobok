@@ -8,7 +8,7 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import BigCalendar from 'react-big-calendar'
-import TimeRange from './vendor/react-time-range'
+import TimeRange from 'react-time-range'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -75,7 +75,6 @@ if(document.getElementById("timerange")) {
       endMoment={moment().add(1, "hour").format()}
       startLabel=""
       endLabel=""
-      delimiter="-"
-      className="p-5 appearance-none flex items-center justify-around block bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+      className="p-1 appearance-none flex items-center justify-around block bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
   />, document.getElementById("timerange"))
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-black w-screen h-screen opacity-75 fixed">
+<div class="w-screen h-screen fixed">
     
 </div>
 <div class="relative pt-40 flex justify-center">

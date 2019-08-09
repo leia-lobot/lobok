@@ -10,7 +10,7 @@
 
         <!-- Right -->
         <div class="w-4/5">
-            <div class="bg-black opacity-75 absolute w-4/5 h-screen"></div>
+            <div class="absolute w-4/5 h-screen"></div>
             <div class="pt-40 flex justify-center relative">
                     <div class="flex flex-col">
                         <div class="flex justify-center">
@@ -28,6 +28,4 @@
                 @endcomponent
         </div>
     </div>
-    
-
 @endsection
