@@ -12,15 +12,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 //Route::resource('companies', 'CompaniesController');
 
-Auth::routes();
+Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+Route::get('/', 'HomeController@welcome')->name('welcome');
 
 
 Route::get('/google', 'GoogleController@index');
@@ -35,7 +32,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 // Manager + Admin
 Route::group(['middleware' => ['role:admin|manager']], function () {
 
-    Route::get('/companies', 'CompaniesController@index')->name('companies/index');                 // Company::index
+
     Route::post('/companies', 'CompaniesController@store')->name('companies/store');                // Company::store
     Route::get('/companies/{slug}', 'CompaniesController@show')->name('companies/show');            // Company::show
 
@@ -80,6 +77,8 @@ Route::get('seed', function () {
 });
 
 // TODO
+
+Route::get('/companies', 'CompaniesController@index')->name('companies/index');                 // Company::index
 
 Route::get('/reservations/create', 'ReservationsController@create');
 Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store    

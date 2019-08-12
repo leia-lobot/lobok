@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Reservation;
 use App\Company;
 use App\Resource;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -14,11 +15,16 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function dashboard()
     {
         $companies = Company::all();
         $resources = Resource::all();
         //dd($reservations);
-        return view('dashboard', compact(['companies', 'resources']));
+        return Inertia::render('Dashboard/Index', compact(['companies', 'resources']));
+    }
+
+    public function welcome()
+    {
+        return Inertia::render('Welcome');
     }
 }
