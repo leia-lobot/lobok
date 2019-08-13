@@ -7,15 +7,21 @@ export default function Layout({ children }) {
       
 
       <div className="flex flex-wrap">
-        <header className="w-screen h-32">
-         
-        </header>
-      <aside className="w-1/5 h-screen -mt-32 bg-red-900 opacity-75">
-      <h1 className="text-white absolute">LOBOK</h1>
-        <nav className="mt-32">
-          <InertiaLink href="/">Home</InertiaLink>
-          <InertiaLink href="/about">About</InertiaLink>
-          <InertiaLink href="/contact">Contact</InertiaLink>
+        <div className="w-1/5 bg-red-900 opacity-75 inline-flex">
+          <h1 className="text-white absolute items-center justify-center w-auto h-auto" style={{fontSize: 32}}>LOBOK</h1>
+        </div>
+      
+      <header className="w-4/5 h-32">
+        
+      </header>
+      <aside className="w-1/5 h-screen bg-red-900 opacity-75">
+      
+        <nav className="ml-12">
+          <InertiaLink href="/dashboard">Home</InertiaLink>
+          <br/>
+          <InertiaLink href="/reservation">Reservation</InertiaLink>
+          <br/>
+          <InertiaLink href="/overview">Overview</InertiaLink>
         </nav>
       </aside>
 

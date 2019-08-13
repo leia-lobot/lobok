@@ -4,7 +4,7 @@ import Layout from '../../Shared/Layout';
 export default function() {
     return (
         <Layout>
-            <div>Dashboard</div>
+            <div className="text-white">Welcome</div>
         </Layout>
     )
 }

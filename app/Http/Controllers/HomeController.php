@@ -17,14 +17,26 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        $companies = Company::all();
-        $resources = Resource::all();
-        //dd($reservations);
-        return Inertia::render('Dashboard/Index', compact(['companies', 'resources']));
+        return Inertia::render('Dashboard/Index');
     }
 
     public function welcome()
     {
         return Inertia::render('Welcome');
+    }
+
+    public function overview()
+    {
+        $resources = Resource::all();
+        $events = Reservation::all();
+        return Inertia::render('Dashboard/Overview', compact(['resources', 'events']));
+    }
+
+    public function reservation()
+    {
+        $companies = Company::all();
+        $resources = Resource::all();
+
+        return Inertia::render('Dashboard/Reservation', compact(['companies', 'resources']));
     }
 }

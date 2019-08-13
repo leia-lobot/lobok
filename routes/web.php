@@ -18,6 +18,8 @@ Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
 
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('/', 'HomeController@welcome')->name('welcome');
+Route::get('/overview', 'HomeController@overview')->name('overview');
+Route::get('/reservation', 'HomeController@reservation')->name('reservation');
 
 
 Route::get('/google', 'GoogleController@index');
