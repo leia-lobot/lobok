@@ -1,61 +1,176 @@
-import { InertiaLink } from 'inertia-react'
-import React from 'react'
+import React from 'react';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import {mainListItems} from './listItems'
 
-export default function Layout({ children }) {
+function Copyright() {
   return (
-    <main  className="bg-cover w-screen h-screen relative" style={{backgroundImage: "url('https://res.cloudinary.com/dimcuw4l3/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1565176364/lobok_background_zrepsk.png')"}}>
-      
-
-      <div className="flex flex-wrap">
-        <div className="w-1/5 bg-red-900 opacity-75 inline-flex">
-          <h1 className="text-white absolute items-center justify-center w-auto h-auto" style={{fontSize: 32}}>LOBOK</h1>
-        </div>
-      
-      <header className="w-4/5 h-32">
-        
-      </header>
-      <aside className="w-1/5 h-screen bg-red-900 opacity-75">
-      
-        <nav className="ml-12">
-          <InertiaLink href="/dashboard">Home</InertiaLink>
-          <br/>
-          <InertiaLink href="/reservation">Reservation</InertiaLink>
-          <br/>
-          <InertiaLink href="/overview">Overview</InertiaLink>
-        </nav>
-      </aside>
-
-      <article className="w-4/5 bg-gray-900 opacity-75">{children}</article>
-      </div>
-    </main>
-  )
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'. Built with '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Material-UI.
+      </Link>
+    </Typography>
+  );
 }
-/*
-<div>
-        <!-- Left -->
-        <div class="flex justify-center w-1/5 opacity-75 bg-red-900">
-            <h1 class="text-gray-100 text-6xl pt-16">LOBOK</h1>
-            
-        </div>
 
-        <!-- Right -->
-        <div class="w-4/5">
-            <div class="absolute w-4/5 h-screen"></div>
-            <div class="pt-40 flex justify-center relative">
-                    <div class="flex flex-col">
-                        <div class="flex justify-center">
-                                <a href="#reserve-modal" class="text-white rounded bg-red-700 px-5 py-2 shadow-2xl hover:bg-red-800 mr-10">Boka nu</a>
-                                <a href="#overview-modal" class="text-white rounded bg-red-700 px-5 py-2 shadow-2xl hover:bg-red-800">Översikt</a>
-                        </div>
-                    </div>
-                    
-                </div>
-            
-               @include('components.reserve')
-                
-                @component('components.modal', ['name' => 'overview-modal', 'style' => 'bg-white'])
-                    <div id="calendar"></div>
-                @endcomponent
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: 'none',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9),
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 240,
+  },
+}));
+
+export default function Dashboard({children}) {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Dashboard
+          </Typography>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
         </div>
+        <Divider />
+        <List>{mainListItems}</List>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          {children}
+        </Container>
+        <Copyright />
+      </main>
     </div>
-    */
+  );
+}
