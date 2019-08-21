@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { InertiaLink } from 'inertia-react';
+import { InertiaLink } from '@inertiajs/inertia-react';
 
 export default function Welcome() {
   return (
