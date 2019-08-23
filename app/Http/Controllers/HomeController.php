@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Reservation;
 use App\Company;
 use App\Resource;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -27,8 +28,30 @@ class HomeController extends Controller
 
     public function overview()
     {
-        $resources = Resource::all();
-        $events = Reservation::all();
+        $rawResources = Resource::all();
+        // TODO: Don't fetch all events, just upcoming and maybe 1 week old?
+        $rawEvents = Reservation::all();
+
+
+
+
+        $events = $rawEvents->map(function ($event) {
+            return [
+                'id' => $event->id,
+                'title' => $event->title,
+                'start' => Carbon::parse("{$event->start_time}")->toW3cString(),
+                'end' => Carbon::parse("{$event->end_time}")->toW3cString(),
+                'resourceId' => $event->resource_id
+            ];
+        });
+
+        $resources = $rawResources->map(function ($resource) {
+            return [
+                'resourceId' => $resource->id,
+                'resourceTitle' => $resource->name
+            ];
+        });
+
         return Inertia::render('Dashboard/Overview', compact(['resources', 'events']));
     }
 
