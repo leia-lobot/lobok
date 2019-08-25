@@ -5,7 +5,7 @@ import moment from "moment";
 
 import Layout from "../../Shared/Layout";
 
-export default function() {
+export default function Overview() {
     const { events, resources } = usePage();
     const localizer = BigCalendar.momentLocalizer(moment);
     moment.locale("en-GB");
