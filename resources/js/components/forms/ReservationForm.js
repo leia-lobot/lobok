@@ -11,25 +11,27 @@ import {
     FormControl
 } from "@material-ui/core";
 
+const initialFormState = {
+    title: "",
+    description: "",
+    company: "",
+    resource: "",
+    attendants: 5,
+    start_time: new Date().toISOString(),
+    end_time: new Date().toISOString(),
+    extras: [],
+    errors: {}
+};
+
 export function ReservationForm() {
     const { companies, resources } = usePage();
 
-    const [state, setState] = useState({
-        title: "",
-        description: "",
-        company: "",
-        resource: "",
-        attendants: 5,
-        start_time: new Date().toISOString(),
-        end_time: new Date().toISOString(),
-        extras: [],
-        errors: {}
-    });
+    const [form, setForm] = useState(initialFormState);
 
-    const handleChange = name => event => {
+    const handleChange = event => {
         setState({
-            ...state,
-            [name]: event.target.value
+            ...form,
+            [event.target.name]: event.target.value
         });
     };
 
@@ -41,11 +43,11 @@ export function ReservationForm() {
                     name="title"
                     type="text"
                     label="Title"
-                    helperText={state.errors.title}
-                    error={state.errors.title ? true : false}
+                    helperText={form.errors.title}
+                    error={form.errors.title ? true : false}
                     className={""}
                     fullWidth
-                    value={state.title}
+                    value={form.title}
                     onChange={handleChange}
                 />
 
@@ -56,11 +58,11 @@ export function ReservationForm() {
                     label="Description"
                     multiline
                     rows="8"
-                    helperText={state.errors.description}
-                    error={state.errors.description ? true : false}
+                    helperText={form.errors.description}
+                    error={form.errors.description ? true : false}
                     className={"" /*classes.textField*/}
                     fullWidth
-                    value={state.description}
+                    value={form.description}
                     onChange={handleChange}
                 />
             </div>
@@ -69,11 +71,11 @@ export function ReservationForm() {
                     <FormControl style={{ width: "100%" }}>
                         <InputLabel htmlFor="company">Company</InputLabel>
                         <Select
-                            value={state.company}
+                            value={form.company}
                             onChange={handleChange}
                             label="Company"
                             fullWidth
-                            error={state.errors.company ? true : false}
+                            error={form.errors.company ? true : false}
                             inputProps={{
                                 name: "company",
                                 id: "company"
@@ -86,18 +88,18 @@ export function ReservationForm() {
                                 </MenuItem>;
                             })}
                         </Select>
-                        <FormHelperText>{state.errors.company}</FormHelperText>
+                        <FormHelperText>{form.errors.company}</FormHelperText>
                     </FormControl>
                 </div>
                 <div className="flex-1 ml-3 mb-3 w1/2">
                     <FormControl style={{ width: "100%" }}>
                         <InputLabel htmlFor="resource">Resource</InputLabel>
                         <Select
-                            value={state.resource}
+                            value={form.resource}
                             onChange={handleChange}
                             className={"w1/2"}
                             fullWidth
-                            error={state.errors.resource ? true : false}
+                            error={form.errors.resource ? true : false}
                             inputProps={{
                                 name: "resource",
                                 id: "resource"
@@ -120,10 +122,10 @@ export function ReservationForm() {
                         id="start_time"
                         label="Start Time"
                         type="datetime-local"
-                        defaultValue={state.start_time}
+                        defaultValue={form.start_time}
                         className={""}
-                        helperText={state.errors.start_time}
-                        error={state.errors.start_time ? true : false}
+                        helperText={form.errors.start_time}
+                        error={form.errors.start_time ? true : false}
                         InputLabelProps={{
                             shrink: true
                         }}
@@ -132,10 +134,10 @@ export function ReservationForm() {
                         id="end_time"
                         label="End Time"
                         type="datetime-local"
-                        defaultValue={state.end_time}
+                        defaultValue={form.end_time}
                         className={""}
-                        helperText={state.errors.end_time}
-                        error={state.errors.end_time ? true : false}
+                        helperText={form.errors.end_time}
+                        error={form.errors.end_time ? true : false}
                         InputLabelProps={{
                             shrink: true
                         }}
@@ -144,10 +146,10 @@ export function ReservationForm() {
                         id="attendants"
                         label="Attendants"
                         type="number"
-                        defaultValue={state.attendants}
+                        defaultValue={form.attendants}
                         className={""}
-                        helperText={state.errors.attendants}
-                        error={state.errors.attendants ? true : false}
+                        helperText={form.errors.attendants}
+                        error={form.errors.attendants ? true : false}
                         InputLabelProps={{
                             shrink: true
                         }}
@@ -157,11 +159,11 @@ export function ReservationForm() {
                         name="extras"
                         type="text"
                         label="Extras"
-                        helperText={state.errors.extras}
-                        error={state.errors.extras ? true : false}
+                        helperText={form.errors.extras}
+                        error={form.errors.extras ? true : false}
                         className={""}
                         fullWidth
-                        value={state.extras}
+                        value={form.extras}
                         onChange={handleChange}
                     />
                 </div>
