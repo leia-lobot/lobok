@@ -29,7 +29,7 @@ export function ReservationForm() {
     const [form, setForm] = useState(initialFormState);
 
     const handleChange = event => {
-        setState({
+        setForm({
             ...form,
             [event.target.name]: event.target.value
         });
