@@ -35,6 +35,13 @@ export function ReservationForm() {
         });
     };
 
+    let items = [];
+    companies.forEach(company => {
+        items.push({ value: company.id, name: company.name });
+    });
+
+    console.log(items);
+
     return (
         <form action="/reservations" method="post">
             <div className="flex flex-wrap -mx-3 mb-3">
@@ -73,20 +80,23 @@ export function ReservationForm() {
                         <Select
                             value={form.company}
                             onChange={handleChange}
-                            label="Company"
+                            className={"w1/2"}
                             fullWidth
                             error={form.errors.company ? true : false}
-                            inputProps={{
-                                name: "company",
-                                id: "company"
-                            }}
                         >
                             <MenuItem value="">None</MenuItem>
-                            {companies.map(company => {
-                                <MenuItem value={company.id}>
-                                    {company.name}
-                                </MenuItem>;
-                            })}
+                            {companies &&
+                                companies.map(item => {
+                                    console.log(item);
+                                    return (
+                                        <MenuItem
+                                            component="option"
+                                            key={item.value}
+                                        >
+                                            {item.name}
+                                        </MenuItem>
+                                    );
+                                })}
                         </Select>
                         <FormHelperText>{form.errors.company}</FormHelperText>
                     </FormControl>
@@ -106,11 +116,12 @@ export function ReservationForm() {
                             }}
                         >
                             <MenuItem value="">None</MenuItem>
-                            {resources.map(resource => {
-                                <MenuItem value={resource.id}>
-                                    {resource.name}
-                                </MenuItem>;
-                            })}
+                            {resources &&
+                                resources.map(resource => {
+                                    <MenuItem value={resource.id}>
+                                        {resource.name}
+                                    </MenuItem>;
+                                })}
                         </Select>
                     </FormControl>
                 </div>
