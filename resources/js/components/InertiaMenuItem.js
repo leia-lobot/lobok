@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import { Inertia, shouldIntercept } from "@inertiajs/inertia";
 
-import { ListItem } from "@material-ui/core";
+import { Menu } from "semantic-ui-react";
 
 const noop = () => undefined;
 
-export default function ListItemLink({
+export default function InertiaMenuItem({
     children,
     data = {},
     href,
@@ -36,8 +36,8 @@ export default function ListItemLink({
     );
 
     return (
-        <ListItem {...props} onClick={visit}>
+        <Menu.Item {...props} name="login" onClick={visit}>
             {children}
-        </ListItem>
+        </Menu.Item>
     );
 }
