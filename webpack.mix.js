@@ -1,4 +1,5 @@
 const mix = require("laravel-mix");
+const path = require("path");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -14,4 +15,12 @@ mix.react("resources/js/app.js", "public/js")
     .sass("resources/sass/app.scss", "public/css")
     .babelConfig({
         plugins: ["@babel/plugin-syntax-dynamic-import"]
+    })
+    .webpackConfig({
+        output: { chunkFilename: "js/[name].js?id=[chunkhash]" },
+        resolve: {
+            alias: {
+                "@": path.resolve("resources/js")
+            }
+        }
     });

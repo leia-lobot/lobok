@@ -26,6 +26,12 @@ function useFormValidation(initialState, validate) {
             [event.target.name]: event.target.value
         });
     }
+    function handleSelectChange(target, value) {
+        setValues({
+            ...values,
+            [target]: value
+        });
+    }
 
     function handleBlur() {
         const validationErrors = validate(values);
@@ -43,6 +49,7 @@ function useFormValidation(initialState, validate) {
         handleChange,
         handleSubmit,
         handleBlur,
+        handleSelectChange,
         values,
         errors,
         hasErrors,
