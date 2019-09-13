@@ -55,6 +55,32 @@ class HomeController extends Controller
         return Inertia::render('Dashboard/Overview', compact(['resources', 'events']));
     }
 
+    public function resource($id)
+    {
+
+        $rawResource = Resource::where('id', $id)->first();
+
+        // TODO: Don't fetch all events, just upcoming and maybe 1 week old?
+        $rawEvents = Reservation::where('resource_id', $id)->get();
+
+        $events = $rawEvents->map(function ($event) {
+            return [
+                'id' => $event->id,
+                'title' => $event->title,
+                'start' => Carbon::parse("{$event->start_time}")->toW3cString(),
+                'end' => Carbon::parse("{$event->end_time}")->toW3cString(),
+                'resourceId' => $event->resource_id
+            ];
+        });
+
+
+
+        $resource['resourceId'] = $rawResource->id;
+        $resource['resourceTitle'] = $rawResource->name;
+
+        return Inertia::render('Dashboard/Resource', compact(['resource', 'events']));
+    }
+
     public function reservation()
     {
         $companies = Company::all();

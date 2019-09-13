@@ -21,6 +21,16 @@ function Menubar() {
             >
                 Dashboard
             </InertiaLink>
+            <InertiaLink
+                name="overview"
+                className={
+                    "item " + (activeItem === "overview" ? "active" : "")
+                }
+                href={`/overview`}
+                onClick={handleItemClick}
+            >
+                Overview
+            </InertiaLink>
             <Menu.Menu position="right">
                 <InertiaLink
                     name="login"

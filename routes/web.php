@@ -16,7 +16,7 @@
 
 Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
 
-Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
 Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/overview', 'HomeController@overview')->name('overview');
 Route::get('/reservation', 'HomeController@reservation')->name('reservation');
@@ -83,7 +83,10 @@ Route::get('seed', function () {
 Route::get('/companies', 'CompaniesController@index')->name('companies/index');                 // Company::index
 
 Route::get('/reservations/create', 'ReservationsController@create');
-Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store    
+Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store
 
 Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
 Route::get('/calendar', 'CalendarController@index');
+
+Route::get('/dashboard/resource/{id}', 'HomeController@resource')->name('dashboard.resource');
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
