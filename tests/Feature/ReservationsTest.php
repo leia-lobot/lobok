@@ -4,8 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Role\UserRole;
 use App\Reservation\State;
+use App\Company;
+use App\Reservation;
 
 class ReservationsTest extends TestCase
 {
@@ -19,19 +20,22 @@ class ReservationsTest extends TestCase
         $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
+        $company = Company::first();
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
-            'resource_id' => $resource->id,
+            'user' => 1,
+            'company' => $company->id,
+            'resource' => $resource->id,
             'start_time' => now(),
             'end_time' => now()->addHour(2),
+            'attendants' => 10,
+            'extras' => ''
         ];
 
         // a user can create a company
         $this->post('/reservations', $attributes);
 
-        $this->assertDatabaseHas('reservations', $attributes);
+        $this->assertEquals(1, Reservation::count());
     }
 
     /** @test */
@@ -230,7 +234,7 @@ class ReservationsTest extends TestCase
     {
         //$this->withoutExceptionHandling();
 
-        $this->actAsUserWithRole('admin');
+        $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create([
             'name' => 'Luminara',
@@ -257,5 +261,30 @@ class ReservationsTest extends TestCase
         $this->patch($reservation->path(), $updated);
 
         $this->assertDatabaseHas('reservations', $updated);
+    }
+
+    public function an_employee_can_delete_a_reservation()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->actAsUserWithRole('employee');
+
+        $resource = factory('App\Resource')->create([
+            'name' => 'Luminara',
+        ]);
+
+        $attributes = [
+            'title' => 'Hodorton',
+            'description' => 'Hodor speaks',
+            'resource_id' => $resource->id,
+            'start_time' => now(),
+            'end_time' => now()->addHour(2),
+        ];
+
+        $reservation = factory('App\Reservation')->create($attributes);
+
+        $this->delete($reservation->path());
+
+        $this->assertDatabaseMissing('reservations', $attributes);
     }
 }
