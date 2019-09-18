@@ -39,13 +39,18 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
-    public function company()
+    public function companies()
     {
-        return $this->belongsTo('App\Company');
+        return $this->belongsToMany('App\Company');
     }
 
     public function reservations()
     {
         return $this->hasMany('App\Reservation');
+    }
+
+    public function joinCompany($company)
+    {
+        return $this->companies()->attach($company);
     }
 }
