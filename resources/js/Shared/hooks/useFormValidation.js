@@ -1,16 +1,16 @@
 import React from "react";
 
-function useFormValidation(initialState, validate) {
+function useFormValidation(initialState, validate, post) {
     const [values, setValues] = React.useState(initialState);
-    const [errors, setErrors] = React.useState({});
+    const [formErrors, setErrors] = React.useState({});
     const [hasErrors, setHasErrors] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     React.useEffect(() => {
         if (isSubmitting) {
-            const noErrors = Object.keys(errors).length === 0;
+            const noErrors = Object.keys(formErrors).length === 0;
             if (noErrors) {
-                console.log("authenticated!");
+                post();
                 setIsSubmitting(false);
                 setHasErrors(false);
             } else {
@@ -18,7 +18,7 @@ function useFormValidation(initialState, validate) {
                 setHasErrors(true);
             }
         }
-    }, [errors, isSubmitting]);
+    }, [formErrors, isSubmitting]);
 
     function handleChange(event) {
         setValues({
@@ -51,7 +51,7 @@ function useFormValidation(initialState, validate) {
         handleBlur,
         handleSelectChange,
         values,
-        errors,
+        formErrors,
         hasErrors,
         isSubmitting
     };
