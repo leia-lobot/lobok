@@ -33,9 +33,6 @@ export default function Resource() {
                     step={30}
                     timeslots={2}
                     defaultDate={new Date()}
-                    resources={resource}
-                    resourceIdAccessor="resourceId"
-                    resourceTitleAccessor="resourceTitle"
                 />
             ) : (
                 <p>No Resources available</p>

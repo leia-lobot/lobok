@@ -21,6 +21,15 @@ class CompaniesController extends Controller
         ]);
     }
 
+    public function view($id)
+    {
+        $company = Company::where('id', $id)->first();
+
+        return Inertia::render('Company/Show', [
+            'companies' => $company
+        ]);
+    }
+
     public function store()
     {
         // Validate
@@ -37,6 +46,9 @@ class CompaniesController extends Controller
     public function show($slug)
     {
         $company = Company::where('slug', $slug)->first();
-        return view('company.show', compact('company'));
+
+        return Inertia::render('Company/Show', [
+            'companies' => $company
+        ]);
     }
 }

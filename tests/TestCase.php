@@ -9,12 +9,16 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
+
+
     public function actAsUserWithRole($role, $extra = null)
     {
         $role = Role::create(['name' => $role]);
 
         if (is_null($extra)) {
-            $user = factory('App\User')->create(['company_id' => factory('App\Company')]);
+            $user = factory('App\User')->create();
+            $company = factory('App\Company')->create();
+            $user->joinCompany($company);
         } else {
             $user = factory('App\User')->create($extra);
         }
