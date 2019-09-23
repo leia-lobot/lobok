@@ -15,10 +15,6 @@ class CreateCompaniesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
-
-            // $table->unsignedBigInteger('owner_id');
-            // $table->foreign('owner_id')->references('id')->on('users');
-
             $table->timestamps();
         });
     }

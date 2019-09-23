@@ -13,12 +13,7 @@ class AddManyCompaniesToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_company_id_foreign');
-            $table->dropColumn('company_id');
-        });
-
-        Schema::create('companies_users', function (Blueprint $table) {
+        Schema::create('company_user', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->bigInteger('company_id', false, true)->nullable();
