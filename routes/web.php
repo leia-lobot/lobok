@@ -14,7 +14,10 @@
 
 //Route::resource('companies', 'CompaniesController');
 
-Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm');
+Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm')->middleware('guest');
+Route::post('login')->name('login.attempt')->uses('Auth\LoginController@login')->middleware('guest');
+Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
+
 
 
 Route::get('/', 'HomeController@welcome')->name('welcome');
@@ -81,6 +84,8 @@ Route::get('seed', function () {
 // TODO
 
 Route::get('/companies', 'CompaniesController@index')->name('companies/index');                 // Company::index
+Route::get('/companies/{id}', 'CompaniesController@view')->name('companies/view');                 // Company::index
+
 
 Route::get('/reservations/create', 'ReservationsController@create');
 Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store
