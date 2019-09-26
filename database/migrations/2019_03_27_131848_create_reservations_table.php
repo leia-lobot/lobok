@@ -18,6 +18,7 @@ class CreateReservationsTable extends Migration
             $table->dateTime('end');
             $table->text('state');
             $table->boolean('request_help')->nullable();
+            $table->boolean('preliminary')->nullable();
             $table->text('information')->nullable();
 
 

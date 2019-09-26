@@ -2,10 +2,12 @@
 
 namespace App\Reservation;
 
-class State {
+class State
+{
     const STATE_PENDING = 'STATE_PENDING';
     const STATE_ACCEPTED = 'STATE_ACCEPTED';
     const STATE_QUEUED = 'STATE_QUEUED';
+    const STATE_RECONFIRM = 'STATE_RECONFIRM';
 
 
     public static function getStateList()
@@ -13,7 +15,8 @@ class State {
         return [
             self::STATE_PENDING => 'Pending',
             self::STATE_ACCEPTED => 'Accepted',
-            self::STATE_QUEUED => 'Queued'
+            self::STATE_QUEUED => 'Queued',
+            self::STATE_RECONFIRM => 'Awaiting reconfirmation'
         ];
     }
 }

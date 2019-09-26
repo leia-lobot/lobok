@@ -14,7 +14,9 @@ class Reservation extends Model
 
     protected $casts = [
         'start' => 'datetime',
-        'end' => 'datetime'
+        'end' => 'datetime',
+        'request_help' => 'boolean',
+        'preliminary' => 'boolean'
     ];
 
     public function user()
@@ -50,5 +52,10 @@ class Reservation extends Model
     public function getDurationAttribute()
     {
         return $this->started_at->diffForHumans($this->ended_at, true);
+    }
+
+    public function getTitleAttribute()
+    {
+        return $this->company->name . ' - ' . $this->user->name;
     }
 }
