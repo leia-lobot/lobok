@@ -9,21 +9,13 @@ class Reservation extends Model
 {
     protected $guarded = [];
     protected $attributes = [
-        'state' => State::STATE_PENDING,
-        'title' => 'test',
-        'description' => 'testing testing'
+        'state' => State::STATE_PENDING
     ];
 
     protected $casts = [
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
-        'date' => 'date'
+        'start' => 'datetime',
+        'end' => 'datetime'
     ];
-
-    public function extras()
-    {
-        return $this->hasMany('App\Extras');
-    }
 
     public function user()
     {

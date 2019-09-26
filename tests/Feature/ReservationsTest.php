@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Carbon\Carbon;
+
 use App\Reservation\State;
 use App\Company;
 use App\Reservation;
@@ -23,16 +25,13 @@ class ReservationsTest extends TestCase
         $company = Company::first();
 
         $attributes = [
-            'user' => 1,
-            'company' => $company->id,
-            'resource' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->addHour(2),
-            'attendants' => 10,
-            'extras' => ''
+            'company_id' => $company->id,
+            'resource_id' => $resource->id,
+            'start' => now(),
+            'end' => now()->addHour(2),
+            'request_help' => false
         ];
 
-        // a user can create a company
         $this->post('/reservations', $attributes);
 
         $this->assertEquals(1, Reservation::count());
@@ -41,22 +40,21 @@ class ReservationsTest extends TestCase
     /** @test */
     public function a_reservation_requires_a_company()
     {
-        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->actAsUserWithRole('employee', []);
 
         $resource = factory('App\Resource')->create();
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->addHour(2),
+            'start' => now(),
+            'end' => now()->addHour(2),
+            'request_help' => false
         ];
 
         // a user can create a company
-        $this->post('/reservations', $attributes)->assertStatus(403);
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('company_id');
 
         $this->assertDatabaseMissing('reservations', $attributes);
     }
@@ -64,15 +62,12 @@ class ReservationsTest extends TestCase
     /** @test */
     public function a_booking_requires_a_resource()
     {
-        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->actAsUserWithRole('employee');
         //$resource = factory('App\Resource')->create();
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
-            //'resource_id' => $resource->id,
             'start_time' => now(),
             'end_time' => now()->addHour(2),
         ];
@@ -86,22 +81,20 @@ class ReservationsTest extends TestCase
     /** @test */
     public function a_booking_has_to_be_in_the_future()
     {
-        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now()->subDay(5),
-            'end_time' => now()->addHour(2),
+            'start' => now()->subDay(5),
+            'end' => now()->addHour(2),
         ];
 
         // a user can create a company
-        $this->post('/reservations', $attributes)->assertSessionHasErrors('start_time');
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('start');
 
         $this->assertDatabaseMissing('reservations', $attributes);
     }
@@ -109,22 +102,20 @@ class ReservationsTest extends TestCase
     /** @test */
     public function a_bookings_end_time_must_be_after_start_time()
     {
-        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->actAsUserWithRole('employee');
 
         $resource = factory('App\Resource')->create();
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->subHour(2),
+            'start' => now(),
+            'end' => now()->subHour(2),
         ];
 
         // a user can create a company
-        $this->post('/reservations', $attributes)->assertSessionHasErrors('end_time');
+        $this->post('/reservations', $attributes)->assertSessionHasErrors('end');
 
         $this->assertDatabaseMissing('reservations', $attributes);
     }
@@ -132,7 +123,7 @@ class ReservationsTest extends TestCase
     /** @test */
     public function a_manager_can_only_change_to_a_valid_state()
     {
-        //$this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->actAsUserWithRole('manager');
 
@@ -140,16 +131,14 @@ class ReservationsTest extends TestCase
             'name' => 'Luminara',
         ]);
         $reservation = factory('App\Reservation')->create([
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->subHour(2),
+            'start' => now(),
+            'end' => now()->subHour(2),
         ]);
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
 
-        $this->post($reservation->path() . '/state', ['state' => 2])->assertSessionHasErrors('state');
+        $this->post($reservation->path() . '/state', ['state' => 6])->assertSessionHasErrors('state');
 
         $this->assertEquals(State::STATE_PENDING, $reservation->fresh()->state);
     }
@@ -165,11 +154,9 @@ class ReservationsTest extends TestCase
             'name' => 'Luminara',
         ]);
         $reservation = factory('App\Reservation')->create([
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->subHour(2),
+            'start' => now(),
+            'end' => now()->subHour(2),
         ]);
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
@@ -190,11 +177,9 @@ class ReservationsTest extends TestCase
             'name' => 'Luminara',
         ]);
         $reservation = factory('App\Reservation')->create([
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->subHour(2),
+            'start' => now(),
+            'end' => now()->subHour(2),
         ]);
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
@@ -215,11 +200,9 @@ class ReservationsTest extends TestCase
             'name' => 'Luminara',
         ]);
         $reservation = factory('App\Reservation')->create([
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->subHour(2),
+            'start' => now(),
+            'end' => now()->subHour(2),
         ]);
 
         $this->assertEquals(State::STATE_PENDING, $reservation->state);
@@ -232,7 +215,7 @@ class ReservationsTest extends TestCase
     /** @test */
     public function an_employee_can_update_a_reservation()
     {
-        //$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $this->actAsUserWithRole('employee');
 
@@ -241,19 +224,15 @@ class ReservationsTest extends TestCase
         ]);
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->addHour(2),
+            'start' => Carbon::parse('2019-09-27 10:14:58'),
+            'end' => Carbon::parse('2019-09-27 14:14:58'),
         ];
 
         $updated = [
-            'title' => 'Hodor',
-            'description' => 'Door',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->addHour(2),
+            'start' => Carbon::parse('2019-09-26 10:14:58'),
+            'end' => Carbon::parse('2019-09-26 14:14:58'),
         ];
 
         $reservation = factory('App\Reservation')->create($attributes);
@@ -263,6 +242,7 @@ class ReservationsTest extends TestCase
         $this->assertDatabaseHas('reservations', $updated);
     }
 
+    /** @test */
     public function an_employee_can_delete_a_reservation()
     {
         //$this->withoutExceptionHandling();
@@ -274,11 +254,9 @@ class ReservationsTest extends TestCase
         ]);
 
         $attributes = [
-            'title' => 'Hodorton',
-            'description' => 'Hodor speaks',
             'resource_id' => $resource->id,
-            'start_time' => now(),
-            'end_time' => now()->addHour(2),
+            'start' => now(),
+            'end' => now()->addHour(2),
         ];
 
         $reservation = factory('App\Reservation')->create($attributes);

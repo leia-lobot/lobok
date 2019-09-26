@@ -22,7 +22,7 @@ Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
 
 Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/overview', 'HomeController@overview')->name('overview');
-Route::get('/reservation', 'HomeController@reservation')->name('reservation');
+Route::get('/reservation/create', 'ReservationsController@create')->name('reservations/create');
 
 
 Route::get('/google', 'GoogleController@index');

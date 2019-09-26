@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ReservationsStateController extends Controller
 {
-    public function changeState($id) {
+    public function changeState($id)
+    {
 
         // Validate
 
-        $validator = Validator::make(request()->all(),[
+        $validator = Validator::make(request()->all(), [
             'state' => [
                 'required',
                 new ReservationStateRule
@@ -28,6 +29,6 @@ class ReservationsStateController extends Controller
             'state' => request('state')
         ]);
 
-         // TODO: Fire some kind of event to do stuffs
+        // TODO: Fire some kind of event to do stuffs
     }
 }

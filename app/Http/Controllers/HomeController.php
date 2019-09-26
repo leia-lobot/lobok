@@ -80,27 +80,4 @@ class HomeController extends Controller
 
         return Inertia::render('Dashboard/Resource', compact(['resource', 'events']));
     }
-
-    public function reservation()
-    {
-        $companies = Company::all();
-        $resources = Resource::all();
-
-        $companies = $companies->map(function ($company) {
-            return [
-                'value' => $company->id,
-                'key' => $company->id,
-                'text' => $company->name
-            ];
-        });
-        $resources = $resources->map(function ($resource) {
-            return [
-                'value' => $resource->id,
-                'key' =>  100 + $resource->id,
-                'text' => $resource->name
-            ];
-        });
-
-        return Inertia::render('Dashboard/Reservation', compact(['companies', 'resources']));
-    }
 }

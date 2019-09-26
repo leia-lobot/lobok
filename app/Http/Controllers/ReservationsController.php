@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Reservation;
-use App\Company;
 use Carbon\Carbon;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Company;
+use App\Reservation;
+use App\Resource;
 
 class ReservationsController extends Controller
 {
@@ -18,35 +20,31 @@ class ReservationsController extends Controller
 
     public function store()
     {
+
         // Validation
-        /*      $validation = request()->validate([
-            'company' => 'required|exists:companies,id',
-            'resource' => 'required|exists:resources,id',
-            'start_time' => 'required|date|after:yesterday',
-            'end_time' => 'required|date|after:start_time',
-            'attendants' => 'required|numeric',
-            'extras' => 'nullable'
-        ]); */
+        $this->validate(request(), [
+            'company_id' => 'required|exists:companies,id',
+            'resource_id' => 'required|exists:resources,id',
+            'start' => 'required|date|after:yesterday',
+            'end' => 'required|date|after:start',
+            'request_help' => ''
+        ]);
 
 
         // Creation
         $user = auth()->user();
 
         $stuff = request();
-        //dd($stuff);
-        //$attributes['user_id'] = 1;
 
-        $company = Company::where('id', $stuff['company'])->first();
+        $company = Company::where('id', $stuff['company_id'])->first();
+        //if($company)
 
         $attributes = [
             'user_id' => $user->id,
-            'resource_id' => $stuff['resource'],
-            //'title' => $company->name + '-' + $stuff['resource'],
-            'date' => Carbon::parse($stuff['date']),
-            'start_time' => Carbon::parse($stuff['start-time']),
-            'end_time' => Carbon::parse($stuff['end-time']),
-            'attendants' => $stuff['attendants'],
-            //'extras' => $stuff['extras']
+            'resource_id' => $stuff['resource_id'],
+            'start' => Carbon::parse($stuff['start']),
+            'end' => Carbon::parse($stuff['end']),
+            'request_help' => $stuff['request_help']
         ];
 
 
@@ -56,15 +54,6 @@ class ReservationsController extends Controller
         $reservation->save();
 
         return redirect('/home');
-
-        /*$attributes['user_id'] = $user->id;
-
-        if ($user->company instanceof \App\Company) {
-            $user->company->reservations()->create($attributes);
-        } else {
-            return response('Need to belong to a company to add a reservation', 403);
-        }
-        */
     }
 
     public function update($id)
@@ -73,21 +62,17 @@ class ReservationsController extends Controller
 
         // Validate
         $validate = request()->validate([
-            'title' => 'required',
-            'description' => 'required',
             'resource_id' => 'required|exists:resources,id',
-            'start_time' => 'required|date|after:yesterday',
-            'end_time' => 'required|date|after:start_time',
+            'start' => 'required|date|after:yesterday',
+            'end' => 'required|date|after:start_time',
         ]);
 
         // Update
 
         $reservation->update(request([
-            'title',
-            'description',
-            'resource_id',
-            'start_time',
-            'end_time',
+            'resource',
+            'start',
+            'end',
         ]));
 
         // Redirect
@@ -102,6 +87,24 @@ class ReservationsController extends Controller
 
     public function create()
     {
-        return view('reservations.create');
+        $companies = Company::all();
+        $resources = Resource::all();
+
+        $companies = $companies->map(function ($company) {
+            return [
+                'value' => $company->id,
+                'key' => $company->id,
+                'text' => $company->name
+            ];
+        });
+        $resources = $resources->map(function ($resource) {
+            return [
+                'value' => $resource->id,
+                'key' =>  100 + $resource->id,
+                'text' => $resource->name
+            ];
+        });
+
+        return Inertia::render('Reservation/CreateReservation', compact(['companies', 'resources']));
     }
 }

@@ -52,12 +52,10 @@ $factory->define(Reservation::class, function (Faker $faker) {
     $end_date = $start_date->copy()->addHour(rand(1, 5));
 
     return [
-        'title' => $faker->name,
-        'description' => $faker->text,
         'resource_id' => factory(Resource::class)->create(),
         'company_id' => factory(Company::class)->create(),
         'user_id' => factory(User::class)->create(),
-        'start_time' => $start_date,
-        'end_time' => $end_date,
+        'start' => $start_date,
+        'end' => $end_date,
     ];
 });
