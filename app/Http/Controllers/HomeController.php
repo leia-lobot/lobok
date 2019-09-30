@@ -33,14 +33,13 @@ class HomeController extends Controller
         $rawEvents = Reservation::all();
 
 
-
-
         $events = $rawEvents->map(function ($event) {
+
             return [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => Carbon::parse("{$event->start_time}")->toW3cString(),
-                'end' => Carbon::parse("{$event->end_time}")->toW3cString(),
+                'start' => Carbon::parse($event->start)->format('D M d Y H:i:s e+'),
+                'end' => Carbon::parse($event->end)->format('D M d Y H:i:s e+'),
                 'resourceId' => $event->resource_id
             ];
         });
@@ -48,11 +47,20 @@ class HomeController extends Controller
         $resources = $rawResources->map(function ($resource) {
             return [
                 'resourceId' => $resource->id,
-                'resourceTitle' => $resource->name
+                'resourceTitle' => $resource->name,
             ];
         });
 
-        return Inertia::render('Dashboard/Overview', compact(['resources', 'events']));
+        $resourceList = $rawResources->map(function ($resource) {
+            return [
+                'value' => $resource->id,
+                'key' =>  $resource->id,
+                'text' => $resource->name
+            ];
+        });
+
+
+        return Inertia::render('Dashboard/Overview', compact(['resources', 'resourceList', 'events']));
     }
 
     public function resource($id)
@@ -67,8 +75,8 @@ class HomeController extends Controller
             return [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => Carbon::parse("{$event->start_time}")->toW3cString(),
-                'end' => Carbon::parse("{$event->end_time}")->toW3cString(),
+                'start' => Carbon::parse("{$event->start}")->toW3cString(),
+                'end' => Carbon::parse("{$event->end}")->toW3cString(),
                 'resourceId' => $event->resource_id
             ];
         });

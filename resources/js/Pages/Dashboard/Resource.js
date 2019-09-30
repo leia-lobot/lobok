@@ -1,14 +1,12 @@
 import React from "react";
 import { usePage } from "@inertiajs/inertia-react";
-import BigCalendar from "react-big-calendar";
 import moment from "moment";
 
 import Layout from "../../Shared/Layout";
+import ResourceCalendar from "../../components/Calendars/ResourceCalendar";
 
 export default function Resource() {
     const { events, resource } = usePage();
-    const localizer = BigCalendar.momentLocalizer(moment);
-    moment.locale("en-GB");
 
     let parsedEvents = events.map(event => {
         return {
@@ -23,17 +21,7 @@ export default function Resource() {
     return (
         <Layout>
             {resource !== null ? (
-                <BigCalendar
-                    events={parsedEvents}
-                    min={new Date(2017, 10, 0, 6, 0, 0)}
-                    max={new Date(2017, 10, 0, 22, 0, 0)}
-                    localizer={localizer}
-                    defaultView={BigCalendar.Views.DAY}
-                    views={["day", "work_week"]}
-                    step={30}
-                    timeslots={2}
-                    defaultDate={new Date()}
-                />
+                <ResourceCalendar events={parsedEvents} />
             ) : (
                 <p>No Resources available</p>
             )}

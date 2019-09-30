@@ -1,42 +1,47 @@
 import React from "react";
 import { usePage } from "@inertiajs/inertia-react";
-import BigCalendar from "react-big-calendar";
-import moment from "moment";
+import { Form, Button, Segment, Message } from "semantic-ui-react";
 
 import Layout from "../../Shared/Layout";
+import ResourceCalendar from "../../components/Calendars/ResourceCalendar";
+import OverviewCalendar from "../../components/Calendars/OverviewCalendar";
 
 export default function Overview() {
-    const { events, resources } = usePage();
-    const localizer = BigCalendar.momentLocalizer(moment);
-    moment.locale("en-GB");
+    const { events, resources, resourceList } = usePage();
+    const [selectedResource, setSelectedResource] = React.useState();
+    const [filteredEvents, setFilteredEvents] = React.useState();
 
-    let parsedEvents = events.map(event => {
-        return {
-            id: event.id,
-            title: event.title,
-            start: moment(event.start).toDate(),
-            end: moment(event.end).toDate(),
-            resourceId: event.resourceId
-        };
-    });
+    React.useEffect(() => {
+        setFilteredEvents(
+            events.filter(event => {
+                return event.resourceId === selectedResource;
+            })
+        );
+    }, [selectedResource]);
 
     return (
         <Layout>
             {resources.length > 0 ? (
-                <BigCalendar
-                    events={parsedEvents}
-                    min={new Date(2017, 10, 0, 6, 0, 0)}
-                    max={new Date(2017, 10, 0, 22, 0, 0)}
-                    localizer={localizer}
-                    defaultView={BigCalendar.Views.DAY}
-                    views={["day", "work_week"]}
-                    step={30}
-                    timeslots={2}
-                    defaultDate={new Date()}
-                    resources={resources}
-                    resourceIdAccessor="resourceId"
-                    resourceTitleAccessor="resourceTitle"
-                />
+                <>
+                    <Form>
+                        <Form.Select
+                            onChange={(e, { value }) => {
+                                setSelectedResource(value);
+                            }}
+                            options={resourceList}
+                            value={selectedResource}
+                        />
+                    </Form>
+
+                    {selectedResource ? (
+                        <ResourceCalendar events={filteredEvents} />
+                    ) : (
+                        <OverviewCalendar
+                            events={events}
+                            resources={resources}
+                        />
+                    )}
+                </>
             ) : (
                 <p>No Resources available</p>
             )}
