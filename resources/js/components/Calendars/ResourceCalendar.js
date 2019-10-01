@@ -5,12 +5,9 @@ const localizer = BigCalendar.momentLocalizer(moment);
 moment.locale("en-GB");
 
 export default function ResourceCalendar(props) {
-    const [events, setEvents] = React.useState(props.events);
     return (
         <BigCalendar
-            events={events}
-            min={new Date(2017, 10, 0, 6, 0, 0)}
-            max={new Date(2017, 10, 0, 22, 0, 0)}
+            events={props.events}
             localizer={localizer}
             defaultView={BigCalendar.Views.DAY}
             views={["day", "work_week"]}

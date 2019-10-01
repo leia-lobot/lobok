@@ -98,5 +98,6 @@ Route::post('/reservations', 'ReservationsController@store')->name('reservations
 Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
 Route::get('/calendar', 'CalendarController@index');
 
+Route::get('/dashboard/resource/overview', 'HomeController@overview')->name('dashboard.overview');
 Route::get('/dashboard/resource/{id}', 'HomeController@resource')->name('dashboard.resource');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');

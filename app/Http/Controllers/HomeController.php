@@ -32,14 +32,12 @@ class HomeController extends Controller
         // TODO: Don't fetch all events, just upcoming and maybe 1 week old?
         $rawEvents = Reservation::all();
 
-
         $events = $rawEvents->map(function ($event) {
-
             return [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => Carbon::parse($event->start)->format('D M d Y H:i:s e+'),
-                'end' => Carbon::parse($event->end)->format('D M d Y H:i:s e+'),
+                'start' => Carbon::parse("{$event->start}")->toW3cString(),
+                'end' => Carbon::parse("{$event->end}")->toW3cString(),
                 'resourceId' => $event->resource_id
             ];
         });
@@ -86,6 +84,6 @@ class HomeController extends Controller
         $resource['resourceId'] = $rawResource->id;
         $resource['resourceTitle'] = $rawResource->name;
 
-        return Inertia::render('Dashboard/Resource', compact(['resource', 'events']));
+        return Inertia::render('Dashboard/Resources/Resource', compact(['resource', 'events']));
     }
 }

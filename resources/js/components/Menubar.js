@@ -27,7 +27,7 @@ function Menubar() {
                 className={
                     "item " + (activeItem === "overview" ? "active" : "")
                 }
-                href={`/overview`}
+                href={`/dashboard/resource/overview`}
                 onClick={handleItemClick}
             >
                 Overview
