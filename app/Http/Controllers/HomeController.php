@@ -60,7 +60,7 @@ class HomeController extends Controller
         });
 
 
-        return Inertia::render('Dashboard/Overview', compact(['resources', 'resourceList', 'events']));
+        return Inertia::render('Dashboard/Resources/Overview', compact(['resources', 'resourceList', 'events']));
     }
 
     public function resource($id)
