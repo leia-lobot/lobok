@@ -14,9 +14,14 @@
 
 //Route::resource('companies', 'CompaniesController');
 
-Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm')->middleware('guest');
-Route::post('login')->name('login.attempt')->uses('Auth\LoginController@login')->middleware('guest');
-Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
+Auth::routes();
+
+//Route::get('login')->name('login')->uses('Auth\LoginController@showLoginForm')->middleware('guest');
+//Route::post('login')->name('login.attempt')->uses('Auth\LoginController@login')->middleware('guest');
+
+// Route::post('register')->name('login.attempt')->uses('Auth\LoginController@login')->middleware('guest');
+
+// Route::post('logout')->name('logout')->uses('Auth\LoginController@logout');
 
 
 
@@ -78,7 +83,7 @@ Route::post('accept', 'InviteController@store');
 Route::get('accept/{token}', 'InviteController@accept')->name('accept');
 
 Route::get('seed', function () {
-    factory('App\Reservation', 10)->create();
+    factory('App\Reservation', 3)->create();
 });
 
 // TODO
