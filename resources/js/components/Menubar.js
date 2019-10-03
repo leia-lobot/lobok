@@ -32,6 +32,20 @@ function Menubar() {
             >
                 Overview
             </InertiaLink>
+            {auth.user && (
+                <InertiaLink
+                    name="my-reservations"
+                    className={
+                        "item " +
+                        (activeItem === "my-reservations" ? "active" : "")
+                    }
+                    href={`/dashboard/my-reservations`}
+                    onClick={handleItemClick}
+                >
+                    My Reservations
+                </InertiaLink>
+            )}
+
             {!auth.user ? (
                 <Menu.Menu position="right">
                     <InertiaLink

@@ -105,6 +105,6 @@ class ReservationsController extends Controller
             ];
         });
 
-        return Inertia::render('Reservation/CreateReservation', compact(['companies', 'resources']));
+        return Inertia::render('Dashboard/Reservations/CreateReservation', compact(['companies', 'resources']));
     }
 }

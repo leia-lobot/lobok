@@ -101,3 +101,5 @@ Route::get('/calendar', 'CalendarController@index');
 Route::get('/dashboard/resource/overview', 'HomeController@overview')->name('dashboard.overview');
 Route::get('/dashboard/resource/{id}', 'HomeController@resource')->name('dashboard.resource');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+
+Route::get('/dashboard/my-reservations', 'HomeController@myReservations')->name('dashboard.my-reservations');
