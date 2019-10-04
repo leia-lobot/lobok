@@ -1,7 +1,8 @@
 import React from "react";
-import Inertia from "@inertiajs/inertia-react";
 import { usePage } from "@inertiajs/inertia-react";
-import { Form, Button, Segment } from "semantic-ui-react";
+import { Inertia } from "@inertiajs/inertia";
+import { Form, Button, Segment, Message } from "semantic-ui-react";
+import { DateTimeInput } from "semantic-ui-calendar-react";
 
 import useFormValidation from "../../Shared/hooks/useFormValidation";
 import validateReservation from "../../Shared/validation/validateReservation";
@@ -15,14 +16,15 @@ const INITIAL_STATE = {
     preliminary: false
 };
 
-export default function CreateReservationForm() {
+export default function CreateReservationForm(props) {
     function makeReservation() {
         // Make a POST visit
-        Inertia.post("/reservation/create", values);
+        Inertia.post("/reservations", values);
     }
 
     const {
         handleChange,
+        handleChanges,
         handleSubmit,
         handleBlur,
         handleSelectChange,
@@ -49,6 +51,7 @@ export default function CreateReservationForm() {
                         placeholder="Choose a company"
                         selection
                         value={values.company}
+                        error={formErrors.company}
                     />
                     <Form.Select
                         onChange={(e, { value }) =>
@@ -61,6 +64,49 @@ export default function CreateReservationForm() {
                         placeholder="Choose a resource"
                         selection
                         value={values.resource}
+                        error={formErrors.resource}
+                    />
+                </Form.Group>
+
+                <Form.Group widths="equal">
+                    <DateTimeInput
+                        name="start"
+                        placeholder="Start"
+                        value={values.start}
+                        onChange={(e, { value }) =>
+                            handleSelectChange("start", value)
+                        }
+                        clearable={true}
+                        // error={formErrors.start}
+                    />
+                    <DateTimeInput
+                        name="end"
+                        placeholder="End"
+                        value={values.end}
+                        onChange={(e, { value }) =>
+                            handleSelectChange("end", value)
+                        }
+                        clearable={true}
+                        // error={formErrors.end}
+                    />
+                </Form.Group>
+
+                <Form.Group widths="equal">
+                    <Form.Checkbox
+                        label="Preliminary"
+                        name="preliminary"
+                        checked={values.preliminary}
+                        onChange={(e, { checked }) =>
+                            handleSelectChange("preliminary", !!checked)
+                        }
+                    />
+                    <Form.Checkbox
+                        label="Extra Service"
+                        name="request_help"
+                        checked={values.request_help}
+                        onChange={(e, { checked }) =>
+                            handleSelectChange("request_help", !!checked)
+                        }
                     />
                 </Form.Group>
 
@@ -69,12 +115,14 @@ export default function CreateReservationForm() {
                 </Button>
             </Form>
 
-            {errors.email && (
-                <Segment>
-                    <Message error>{errors.email}</Message>
-                </Segment>
-            )}
+            {Object.keys(errors).length !== 0 &&
+                Object.keys(errors).map(error => {
+                    <Segment>
+                        <Message error>{error}</Message>
+                    </Segment>;
+                })}
             <Segment>{JSON.stringify(values)}</Segment>
+            <Segment>{JSON.stringify(errors)}</Segment>
         </>
     );
 }

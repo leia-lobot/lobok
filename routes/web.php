@@ -93,7 +93,7 @@ Route::get('/companies/{id}', 'CompaniesController@view')->name('companies/view'
 
 
 Route::get('/reservations/create', 'ReservationsController@create');
-Route::post('/reservations', 'ReservationsController@store')->name('reservations.store');                                   // Reservation::store
+Route::post('/reservations', 'ReservationsController@store')->name('reservations.store')->middleware('auth');                                   // Reservation::store
 
 Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
 Route::get('/calendar', 'CalendarController@index');

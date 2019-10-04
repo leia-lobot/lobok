@@ -25,11 +25,12 @@ class ReservationsTest extends TestCase
         $company = Company::first();
 
         $attributes = [
-            'company_id' => $company->id,
-            'resource_id' => $resource->id,
+            'company' => $company->id,
+            'resource' => $resource->id,
             'start' => now(),
             'end' => now()->addHour(2),
-            'request_help' => false
+            'request_help' => false,
+            'preliminary' => false
         ];
 
         $this->post('/reservations', $attributes);

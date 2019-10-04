@@ -13,10 +13,10 @@ class Reservation extends Model
     ];
 
     protected $casts = [
-        'start' => 'date',
-        'end' => 'date',
-        'request_help' => 'boolean',
-        'preliminary' => 'boolean'
+        'start' => 'datetime',
+        'end' => 'datetime',
+        'request_help' => 'bool',
+        'preliminary' => 'bool'
     ];
 
     public function user()

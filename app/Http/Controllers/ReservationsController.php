@@ -23,11 +23,12 @@ class ReservationsController extends Controller
 
         // Validation
         $this->validate(request(), [
-            'company_id' => 'required|exists:companies,id',
-            'resource_id' => 'required|exists:resources,id',
+            'company' => 'required|exists:companies,id',
+            'resource' => 'required|exists:resources,id',
             'start' => 'required|date|after:yesterday',
             'end' => 'required|date|after:start',
-            'request_help' => ''
+            'request_help' => '',
+            'preliminary' => ''
         ]);
 
 
@@ -36,15 +37,16 @@ class ReservationsController extends Controller
 
         $stuff = request();
 
-        $company = Company::where('id', $stuff['company_id'])->first();
+        $company = Company::where('id', $stuff['company'])->first();
         //if($company)
 
         $attributes = [
             'user_id' => $user->id,
-            'resource_id' => $stuff['resource_id'],
+            'resource_id' => $stuff['resource'],
             'start' => Carbon::parse($stuff['start']),
             'end' => Carbon::parse($stuff['end']),
-            'request_help' => $stuff['request_help']
+            'request_help' => $stuff['request_help'],
+            'preliminary' => $stuff['preliminary'],
         ];
 
 
