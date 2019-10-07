@@ -93,8 +93,6 @@ class HomeController extends Controller
 
         $reservations = $user->reservations()->get();
 
-        //dd($reservations);
-
-        return Inertia::render('Dashboard/Reservations/MyReservations');
+        return Inertia::render('Dashboard/Reservations/MyReservations', compact('reservations'));
     }
 }

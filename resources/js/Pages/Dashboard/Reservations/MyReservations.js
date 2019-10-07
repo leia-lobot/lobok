@@ -1,32 +1,15 @@
 import React from "react";
+import { usePage } from "@inertiajs/inertia-react";
+
 import Layout from "../../../Shared/Layout";
-import { Label, Menu, Table } from "semantic-ui-react";
+import ReservationTable from "../../../components/Tables/ReservationTable";
 
 export default function MyReservations() {
+    const { reservations } = usePage();
+
     return (
         <Layout>
-            <Table celled>
-                <Table.Header>
-                    <Table.HeaderCell>Header</Table.HeaderCell>
-                    <Table.HeaderCell>Header</Table.HeaderCell>
-                    <Table.HeaderCell>Header</Table.HeaderCell>
-                </Table.Header>
-                <Table.Row>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                    <Table.Cell>Cell</Table.Cell>
-                </Table.Row>
-            </Table>
+            <ReservationTable reservations={reservations} />
         </Layout>
     );
 }
