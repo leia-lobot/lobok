@@ -41,6 +41,7 @@ export default function CreateReservationForm(props) {
             <Form onSubmit={handleSubmit}>
                 <Form.Group widths="equal">
                     <Form.Select
+                        label="Company"
                         onChange={(e, { value }) =>
                             handleSelectChange("company", value)
                         }
@@ -54,6 +55,7 @@ export default function CreateReservationForm(props) {
                         error={formErrors.company}
                     />
                     <Form.Select
+                        label="Resource"
                         onChange={(e, { value }) =>
                             handleSelectChange("resource", value)
                         }
@@ -71,6 +73,7 @@ export default function CreateReservationForm(props) {
                 <Form.Group widths="equal">
                     <DateTimeInput
                         name="start"
+                        label="Start"
                         placeholder="Start"
                         value={values.start}
                         onChange={(e, { value }) =>
@@ -81,6 +84,7 @@ export default function CreateReservationForm(props) {
                     />
                     <DateTimeInput
                         name="end"
+                        label="End"
                         placeholder="End"
                         value={values.end}
                         onChange={(e, { value }) =>

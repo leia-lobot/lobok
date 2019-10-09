@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Dropdown } from "semantic-ui-react";
 import { InertiaLink, usePage } from "@inertiajs/inertia-react";
 
 function Menubar() {
@@ -32,6 +32,26 @@ function Menubar() {
             >
                 Overview
             </InertiaLink>
+            <Dropdown text="Resources" pointing className="link item">
+                <Dropdown.Menu>
+                    <InertiaLink
+                        name="overview"
+                        className={
+                            "item " +
+                            (activeItem === "resource" ? "active" : "")
+                        }
+                        href={`/dashboard/resource/1`}
+                        onClick={handleItemClick}
+                    >
+                        Test
+                    </InertiaLink>
+                    <Dropdown.Item>Overview</Dropdown.Item>
+                    <Dropdown.Item>Test1</Dropdown.Item>
+                    <Dropdown.Item>Test2</Dropdown.Item>
+                    <Dropdown.Item>Test3</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+
             {auth.user && (
                 <InertiaLink
                     name="my-reservations"
