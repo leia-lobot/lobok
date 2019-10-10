@@ -4,51 +4,69 @@ import { InertiaLink, usePage } from "@inertiajs/inertia-react";
 
 function Menubar() {
     const pathname = window.location.pathname;
-    const path = pathname === "/" ? "home" : pathname.substr(1);
-    const [activeItem, setActiveItem] = useState(path);
-    const { auth } = usePage();
+    const paths = pathname.split("/");
+    function isActive(value, arr) {
+        return arr.includes(value);
+    }
+    let path;
 
-    const handleItemClick = e => setActiveItem(e.target.name);
+    if (paths) {
+        if (isActive("resource", paths)) {
+            path = "resources";
+        } else if (isActive("my-reservations", paths)) {
+            path = "my-reservations";
+        } else if (isActive("register", paths)) {
+            path = "register";
+        } else if (isActive("login", paths)) {
+            path = "login";
+        } else {
+            path = pathname === "/" ? "home" : pathname.substr(1);
+        }
+    }
+
+    const [activeItem, setActiveItem] = useState(path);
+
+    const { auth, resourceMenuList } = usePage();
 
     return (
         <Menu pointing secondary size="massive" color="teal">
             <InertiaLink
                 name="dashboard"
-                className={
-                    "item " + (activeItem === "dashboard" ? "active" : "")
-                }
-                href={`/dashboard`}
-                onClick={handleItemClick}
+                className={"item "}
+                href={`/`}
+                onClick={() => setActiveItem("dashboard")}
             >
-                Dashboard
+                Lobok
             </InertiaLink>
-            <InertiaLink
-                name="overview"
+
+            <Dropdown
+                text="Resources"
+                pointing
                 className={
-                    "item " + (activeItem === "overview" ? "active" : "")
+                    "link item " + (activeItem === "resources" ? "active" : "")
                 }
-                href={`/dashboard/resource/overview`}
-                onClick={handleItemClick}
             >
-                Overview
-            </InertiaLink>
-            <Dropdown text="Resources" pointing className="link item">
                 <Dropdown.Menu>
                     <InertiaLink
                         name="overview"
-                        className={
-                            "item " +
-                            (activeItem === "resource" ? "active" : "")
-                        }
-                        href={`/dashboard/resource/1`}
-                        onClick={handleItemClick}
+                        className={"item "}
+                        href={`/dashboard/resource/overview`}
+                        onClick={() => setActiveItem("resources")}
                     >
-                        Test
+                        Overview
                     </InertiaLink>
-                    <Dropdown.Item>Overview</Dropdown.Item>
-                    <Dropdown.Item>Test1</Dropdown.Item>
-                    <Dropdown.Item>Test2</Dropdown.Item>
-                    <Dropdown.Item>Test3</Dropdown.Item>
+                    {resourceMenuList &&
+                        resourceMenuList.map(item => (
+                            <InertiaLink
+                                key={`resource-` + item.id}
+                                name={item.name}
+                                className={"item "}
+                                href={`/dashboard/resource/` + item.id}
+                                onClick={() => setActiveItem("resources")}
+                            >
+                                {item.text}
+                            </InertiaLink>
+                        ))}
                 </Dropdown.Menu>
             </Dropdown>
 
@@ -60,7 +78,7 @@ function Menubar() {
                         (activeItem === "my-reservations" ? "active" : "")
                     }
                     href={`/dashboard/my-reservations`}
-                    onClick={handleItemClick}
+                    onClick={() => setActiveItem("my-reservations")}
                 >
                     My Reservations
                 </InertiaLink>
@@ -74,7 +92,7 @@ function Menubar() {
                             "item " + (activeItem === "login" ? "active" : "")
                         }
                         href={`/login`}
-                        onClick={handleItemClick}
+                        onClick={() => setActiveItem("login")}
                     >
                         Login
                     </InertiaLink>
@@ -86,7 +104,7 @@ function Menubar() {
                             (activeItem === "register" ? "active" : "")
                         }
                         href={`/register`}
-                        onClick={handleItemClick}
+                        onClick={() => setActiveItem("register")}
                     >
                         Register
                     </InertiaLink>
@@ -99,7 +117,7 @@ function Menubar() {
                             "item " + (activeItem === "profile" ? "active" : "")
                         }
                         href={`/profile`}
-                        onClick={handleItemClick}
+                        onClick={() => setActiveItem("profile")}
                     >
                         Profile
                     </InertiaLink>

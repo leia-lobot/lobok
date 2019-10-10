@@ -3,7 +3,6 @@ import moment from "moment";
 import { usePage } from "@inertiajs/inertia-react";
 
 import Layout from "../../../Shared/Layout";
-import ResourceLayout from "./ResourceLayout";
 import OverviewCalendar from "../../../components/Calendars/OverviewCalendar";
 
 export default function Overview() {
@@ -22,18 +21,16 @@ export default function Overview() {
 
     return (
         <Layout>
-            <ResourceLayout>
-                {resources.length > 0 ? (
-                    <>
-                        <OverviewCalendar
-                            events={parsedEvents}
-                            resources={resources}
-                        />
-                    </>
-                ) : (
-                    <p>No Resources available</p>
-                )}
-            </ResourceLayout>
+            {resources.length > 0 ? (
+                <>
+                    <OverviewCalendar
+                        events={parsedEvents}
+                        resources={resources}
+                    />
+                </>
+            ) : (
+                <p>No Resources available</p>
+            )}
         </Layout>
     );
 }

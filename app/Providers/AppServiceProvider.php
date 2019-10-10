@@ -11,6 +11,8 @@ use Illuminate\Contracts\Foundation\Application as IlluminateContractsApplicatio
 
 use Inertia\Inertia;
 
+use App\Resource;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -61,6 +63,18 @@ class AppServiceProvider extends ServiceProvider
                     ? Session::get('errors')->getBag('default')->getMessages()
                     : (object) [];
             },
+            'resourceMenuList' => function () {
+                $rawResources = Resource::all();
+
+                return $rawResources->map(function ($resource) {
+                    return [
+                        'text' => $resource->name,
+                        'name' => $resource->slug,
+                        'id' =>  $resource->id
+                    ];
+                });
+            }
+
         ]);
     }
 }

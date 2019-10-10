@@ -4,7 +4,6 @@ import moment from "moment";
 
 import Layout from "../../../Shared/Layout";
 import ResourceCalendar from "../../../components/Calendars/ResourceCalendar";
-import ResourceLayout from "./ResourceLayout";
 
 export default function Resource() {
     const { events, resource } = usePage();
@@ -21,13 +20,11 @@ export default function Resource() {
 
     return (
         <Layout>
-            <ResourceLayout>
-                {resource !== null ? (
-                    <ResourceCalendar events={parsedEvents} />
-                ) : (
-                    <p>No Resources available</p>
-                )}
-            </ResourceLayout>
+            {resource !== null ? (
+                <ResourceCalendar events={parsedEvents} />
+            ) : (
+                <p>No Resources available</p>
+            )}
         </Layout>
     );
 }
