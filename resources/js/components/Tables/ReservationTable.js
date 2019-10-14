@@ -55,11 +55,18 @@ export default function ReservationTable(props) {
                                     "DD-MM-YY HH:mm"
                                 )}
                             </Table.Cell>
-                            <Table.Cell>{reservation.resource_id}</Table.Cell>
-                            <Table.Cell>{reservation.company_id}</Table.Cell>
+                            {/** TODO make URL */}
+                            <Table.Cell>
+                                {reservation.resource_id}
+                            </Table.Cell>{" "}
+                            {/** TODO make URL */}
+                            <Table.Cell>
+                                {reservation.company_id}
+                            </Table.Cell>{" "}
                             <Table.Cell>{reservation.state}</Table.Cell>
                             <Table.Cell>{reservation.request_help}</Table.Cell>
                             <Table.Cell>{reservation.information}</Table.Cell>
+                            {/** TODO make URLs */}
                             <Table.Cell>
                                 <Popup
                                     content="View"

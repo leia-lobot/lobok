@@ -102,4 +102,4 @@ Route::get('/dashboard/resource/overview', 'HomeController@overview')->name('das
 Route::get('/dashboard/resource/{id}', 'HomeController@resource')->name('dashboard.resource');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
-Route::get('/dashboard/my-reservations', 'HomeController@myReservations')->name('dashboard.my-reservations');
+Route::get('/dashboard/my-reservations', 'HomeController@myReservations')->name('dashboard.my-reservations')->middleware('auth');
