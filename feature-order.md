@@ -1,5 +1,4 @@
 # What should we build first
-
 - Invite Customers
 - Creating accounts
 - Logging in as Customer
@@ -9,7 +8,6 @@
 - Reserve Room
 
 # What should we test first?
-
 - Reserve Room
   - View Room listings
     - Allow people to view reservations

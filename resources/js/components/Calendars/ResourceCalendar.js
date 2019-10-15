@@ -3,6 +3,7 @@ import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import { Button, Grid, Header, Segment, Portal } from "semantic-ui-react";
 import CreateReservationForm from "../Forms/CreateReservationForm";
+import { usePage } from "@inertiajs/inertia-react";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 moment.locale("en-GB");
@@ -10,22 +11,26 @@ moment.locale("en-GB");
 export default function ResourceCalendar(props) {
     const [events, setEvents] = useState(props.events);
     const [isOpen, setIsOpen] = useState(false);
-    const [newReservation, setNewReservation] = useState({});
+    const [newReservation, setNewReservation] = useState({
+        company: "",
+        resource: "",
+        start: "",
+        end: "",
+        request_help: false,
+        preliminary: false
+    });
+    const { resource, companies } = usePage();
 
     const handleSelect = ({ start, end }) => {
-        /* TODO: Attept to save reservation */
-        /*
-        const title = window.prompt("New Event name");
-        if (title) {
-            setEvents([
-                ...events,
-                {
-                    start,
-                    end,
-                    title
-                }
-            ]);
-        }*/
+        /* TODO: Attempt to save reservation */
+
+        setNewReservation({
+            ...newReservation,
+            resource: resource.id,
+            company: companies[0].value,
+            start: moment(start),
+            end: moment(end)
+        });
 
         setIsOpen(true);
     };
@@ -50,7 +55,7 @@ export default function ResourceCalendar(props) {
                     }}
                 >
                     <Header>Portal here!</Header>
-                    <CreateReservationForm />
+                    <CreateReservationForm reservation={newReservation} />
 
                     <Button
                         content="Close Portal"

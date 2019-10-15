@@ -1,20 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import moment from "moment";
+
 import { Form, Button, Segment, Message } from "semantic-ui-react";
-import { DateTimeInput } from "semantic-ui-calendar-react";
+import DatetimePicker from "react-semantic-datetime";
 
 import useFormValidation from "../../Shared/hooks/useFormValidation";
 import validateReservation from "../../Shared/validation/validateReservation";
 
-const INITIAL_STATE = {
-    company: "",
-    resource: "",
-    start: "",
-    end: "",
-    request_help: false,
-    preliminary: false
-};
+moment.locale("en-GB");
 
 export default function CreateReservationForm(props) {
     function makeReservation() {
@@ -31,10 +26,17 @@ export default function CreateReservationForm(props) {
         values,
         formErrors,
         isSubmitting
-    } = useFormValidation(INITIAL_STATE, validateReservation, makeReservation);
+    } = useFormValidation(
+        props.reservation,
+        validateReservation,
+        makeReservation
+    );
 
-    const { errors } = usePage();
-    const { companies, resources } = usePage();
+    const { errors, companies, resources } = usePage();
+    const [timeDateDialogs, setTimeDateDialogs] = useState({
+        start: false,
+        end: false
+    });
 
     return (
         <>
@@ -71,29 +73,63 @@ export default function CreateReservationForm(props) {
                 </Form.Group>
 
                 <Form.Group widths="equal">
-                    <DateTimeInput
+                    <Form.Input
                         name="start"
                         label="Start"
                         placeholder="Start"
-                        value={values.start}
-                        onChange={(e, { value }) =>
-                            handleSelectChange("start", value)
+                        value={moment(values.start).format("LLL")}
+                        onClick={() =>
+                            setTimeDateDialogs({
+                                ...timeDateDialogs,
+                                start: true
+                            })
                         }
-                        clearable={true}
+                        disabled={timeDateDialogs.start}
+
                         // error={formErrors.start}
                     />
-                    <DateTimeInput
+                    <Form.Input
                         name="end"
                         label="End"
                         placeholder="End"
-                        value={values.end}
-                        onChange={(e, { value }) =>
-                            handleSelectChange("end", value)
+                        value={moment(values.end).format("LLL")}
+                        onClick={() =>
+                            setTimeDateDialogs({
+                                ...timeDateDialogs,
+                                end: true
+                            })
                         }
-                        clearable={true}
-                        // error={formErrors.end}
+                        disabled={timeDateDialogs.start}
+
+                        // error={formErrors.start}
                     />
                 </Form.Group>
+                {timeDateDialogs.start && (
+                    <DatetimePicker
+                        onChange={value => {
+                            handleSelectChange("start", value);
+                            setTimeDateDialogs({
+                                ...timeDateDialogs,
+                                start: false
+                            });
+                        }}
+                        moment={values.start}
+                        time={true}
+                    />
+                )}
+                {timeDateDialogs.end && (
+                    <DatetimePicker
+                        onChange={value => {
+                            handleSelectChange("end", value);
+                            setTimeDateDialogs({
+                                ...timeDateDialogs,
+                                end: false
+                            });
+                        }}
+                        moment={values.end}
+                        time={true}
+                    />
+                )}
 
                 <Form.Group widths="equal">
                     <Form.Checkbox

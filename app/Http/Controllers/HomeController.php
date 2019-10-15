@@ -63,17 +63,22 @@ class HomeController extends Controller
 
     public function resource($id)
     {
-        $allResources = Resource::all();
-
-        $rawResource = Resource::where('id', $id)->first();
-
-        // TODO: Don't fetch all events, just upcoming and maybe 1 week old?
+        $companies = Company::all();
+        $resources = Resource::all();
+        $resource = Resource::where('id', $id)->first();
         $rawEvents = Reservation::where('resource_id', $id)->get();
 
-        $resourceList = $allResources->map(function ($resource) {
+        $companies = $companies->map(function ($company) {
+            return [
+                'value' => $company->id,
+                'key' => $company->id,
+                'text' => $company->name
+            ];
+        });
+        $resources = $resources->map(function ($resource) {
             return [
                 'value' => $resource->id,
-                'key' =>  $resource->id,
+                'key' =>  100 + $resource->id,
                 'text' => $resource->name
             ];
         });
@@ -88,12 +93,7 @@ class HomeController extends Controller
             ];
         });
 
-
-
-        $resource['resourceId'] = $rawResource->id;
-        $resource['resourceTitle'] = $rawResource->name;
-
-        return Inertia::render('Dashboard/Resources/Resource', compact(['resource', 'events', 'resourceList']));
+        return Inertia::render('Dashboard/Resources/Resource', compact(['resource', 'events', 'resources', 'companies']));
     }
 
     public function myReservations()
