@@ -32,7 +32,7 @@ export default function CreateReservationForm(props) {
         makeReservation
     );
 
-    const { errors, companies, resources } = usePage();
+    const { errors, companies, resources, flash } = usePage();
     const [timeDateDialogs, setTimeDateDialogs] = useState({
         start: false,
         end: false
@@ -163,6 +163,16 @@ export default function CreateReservationForm(props) {
                 })}
             <Segment>{JSON.stringify(values)}</Segment>
             <Segment>{JSON.stringify(errors)}</Segment>
+            {flash.success && (
+                <Message
+                    success
+                    attached="top"
+                    color="green"
+                    content={flash.success}
+                    header={"Reservation sent!"}
+                />
+            )}
+            <Segment>{JSON.stringify(flash)}</Segment>
         </>
     );
 }

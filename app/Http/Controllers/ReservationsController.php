@@ -55,7 +55,7 @@ class ReservationsController extends Controller
 
         $reservation->save();
 
-        return redirect('/home');
+        return redirect()->back()->with('success', ['message here']);
     }
 
     public function update($id)
