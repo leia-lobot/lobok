@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
-import { Button, Grid, Header, Segment, Portal } from "semantic-ui-react";
+import { Button, Header, Segment, Portal } from "semantic-ui-react";
 import CreateReservationForm from "../Forms/CreateReservationForm";
 import { usePage } from "@inertiajs/inertia-react";
 
@@ -20,6 +20,10 @@ export default function ResourceCalendar(props) {
         preliminary: false
     });
     const { resource, companies } = usePage();
+
+    React.useEffect(() => {
+        setIsOpen(false);
+    }, []);
 
     const handleSelect = ({ start, end }) => {
         /* TODO: Attempt to save reservation */
@@ -54,7 +58,7 @@ export default function ResourceCalendar(props) {
                         zIndex: 1000
                     }}
                 >
-                    <Header>Portal here!</Header>
+                    <Header>Make a new reservation</Header>
                     <CreateReservationForm reservation={newReservation} />
 
                     <Button

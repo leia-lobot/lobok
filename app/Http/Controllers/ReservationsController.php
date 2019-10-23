@@ -55,7 +55,7 @@ class ReservationsController extends Controller
 
         $reservation->save();
 
-        return redirect()->back()->with('success', ['message here']);
+        return redirect()->back()->with('success', ['Reservation created.']);
     }
 
     public function update($id)
@@ -85,6 +85,8 @@ class ReservationsController extends Controller
     {
         $reservation = Reservation::where('id', $id)->first();
         $reservation->delete();
+
+        return redirect()->back()->with('success', ['Reservation removed.']);
     }
 
     public function create()

@@ -27,11 +27,12 @@ Auth::routes();
 
 Route::get('/', 'HomeController@welcome')->name('welcome');
 Route::get('/overview', 'HomeController@overview')->name('overview');
-Route::get('/reservation/create', 'ReservationsController@create')->name('reservations/create');
+Route::resource('/reservations', 'ReservationsController');
 
 
 Route::get('/google', 'GoogleController@index');
 
+/*
 // Admin only
 Route::group(['middleware' => ['role:admin']], function () {
     Route::get('/settings', 'SettingsController@index')->name('settings');
@@ -48,7 +49,6 @@ Route::group(['middleware' => ['role:admin|manager']], function () {
 
     Route::post('/resources', 'ResourcesController@store')->name('resources/store');                // Resource::store
     Route::patch('/resources/{resource}', 'ResourcesController@update');                            // Resource::update
-    Route::delete('/resources/{resource}', 'ResourcesController@destroy');                          // Resource::delete
 
     // Reservation Index
     Route::post('/reservations/{reservation}/state', 'ReservationsStateController@changeState');    // Reservation::toggleState
@@ -69,14 +69,14 @@ Route::group(['middleware' => ['role:admin|manager|employer|employee']], functio
 
 
 
-    Route::patch('/reservations/{id}', 'ReservationsController@update');
-    Route::delete('/reservations/{id}', 'ReservationsController@destroy');                           // Reservation::update
+    Route::patch('/reservations/{id}', 'ReservationsController@update');                    // Reservation::update
 });
 
 // Unemployed + Employee + Employer + Manager + Admin
 Route::group(['middleware' => ['role:admin|manager|employer|employee|unemployed']], function () {
     //
 });
+ */
 
 // {token} is a required parameter that will be exposed to us in the controller method
 Route::post('accept', 'InviteController@store');
@@ -92,10 +92,11 @@ Route::get('/companies', 'CompaniesController@index')->name('companies/index'); 
 Route::get('/companies/{id}', 'CompaniesController@view')->name('companies/view');                 // Company::index
 
 
-Route::get('/reservations/create', 'ReservationsController@create');
-Route::post('/reservations', 'ReservationsController@store')->name('reservations.store')->middleware('auth');                                   // Reservation::store
+//Route::get('/reservations/create', 'ReservationsController@create');
+//Route::post('/reservations', 'ReservationsController@store')->name('reservations.store')->middleware('auth');                                   // Reservation::store
+//Route::destroy('/reservations', 'ReservationsController@destroy')->name('reservations.destroy')->middleware('auth');                                   // Reservation::store
 
-Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
+//Route::get('/reservations', 'ReservationsController@index');                                    // Reservation::index
 Route::get('/calendar', 'CalendarController@index');
 
 Route::get('/dashboard/resource/overview', 'HomeController@overview')->name('dashboard.overview');

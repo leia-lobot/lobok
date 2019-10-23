@@ -12,6 +12,8 @@ class Reservation extends Model
         'state' => State::STATE_PENDING
     ];
 
+    protected $appends = ['path'];
+
     protected $casts = [
         'start' => 'datetime',
         'end' => 'datetime',
@@ -37,6 +39,11 @@ class Reservation extends Model
     public function path()
     {
         return "/reservations/{$this->id}";
+    }
+
+    public function getPathAttribute()
+    {
+        return $this->attributes['path'] = "/reservations/{$this->id}";
     }
 
     public function getStartedAtAttribute($start)
